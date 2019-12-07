@@ -4,7 +4,7 @@
 #import "TXImageSprite.h"
 #import "TXLiveBase.h"
 #else
-#import <TXLiteAVSDK_Player/TXLiteAVSDK.h>
+#import <TXLiteAVSDK_Smart/TXLiteAVSDK.h>
 #endif
 
 #import "SuperPlayerView.h"
