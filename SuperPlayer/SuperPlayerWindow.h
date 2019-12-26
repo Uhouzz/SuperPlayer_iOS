@@ -33,4 +33,7 @@ typedef void(^SuperPlayerWindowEventHandler)(void);
 /// 小窗是否显示
 @property (readonly) BOOL isShowing;  //
 
+@property (nonatomic, assign) CGRect floatViewRect;
+
+
 @end

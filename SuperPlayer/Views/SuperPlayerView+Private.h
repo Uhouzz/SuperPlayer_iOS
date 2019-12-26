@@ -62,6 +62,7 @@ TXVodPlayListener, TXLivePlayListener, SuperPlayerControlViewDelegate, TXLiveBas
 /// 中间的提示按钮
 @property (nonatomic, strong) UIButton               *middleBlackBtn;
 @property ButtonAction                               middleBlackBtnAction;
+@property (nonatomic, assign) BOOL hideMiddelBlackBtn;
 
 /** 系统菊花 */
 @property (nonatomic, strong) MMMaterialDesignSpinner *spinner;

@@ -18,7 +18,6 @@
 
 @interface SuperPlayerWindow()<TXVodPlayListener>
 @property (weak) UIView *origFatherView;
-@property CGRect floatViewRect;
 @end
 
 @implementation SuperPlayerWindow {

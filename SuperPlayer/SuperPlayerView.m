@@ -1595,11 +1595,14 @@ static UISlider * _volumeSlider;
 }
 
 - (void)showMiddleBtnMsg:(NSString *)msg withAction:(ButtonAction)action {
+    if (self.hideMiddelBlackBtn) {
+        return;
+    }
+    
     [self.middleBlackBtn setTitle:msg forState:UIControlStateNormal];
     self.middleBlackBtn.titleLabel.text = msg;
     self.middleBlackBtnAction = action;
     CGFloat width = self.middleBlackBtn.titleLabel.attributedText.size.width;
-    
     [self.middleBlackBtn mas_updateConstraints:^(MASConstraintMaker *make) {
         make.width.equalTo(@(width+10));
     }];
