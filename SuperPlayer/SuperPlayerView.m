@@ -322,9 +322,9 @@ static UISlider * _volumeSlider;
             self.livePlayer.delegate = self;
         }
         TXLivePlayConfig *config = [[TXLivePlayConfig alloc] init];
-        config.bAutoAdjustCacheTime = NO;
-        config.maxAutoAdjustCacheTime = 5.0f;
-        config.minAutoAdjustCacheTime = 5.0f;
+        config.bAutoAdjustCacheTime = self.playerConfig.bAutoAdjustCacheTime;
+        config.maxAutoAdjustCacheTime = self.playerConfig.maxAutoAdjustCacheTime;
+        config.minAutoAdjustCacheTime = self.playerConfig.minAutoAdjustCacheTime;
         config.headers = self.playerConfig.headers;
         [self.livePlayer setConfig:config];
         
