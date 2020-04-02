@@ -16,6 +16,8 @@
 - (void)superPlayerDidStart:(SuperPlayerView *)player;
 /// 播放结束通知
 - (void)superPlayerDidEnd:(SuperPlayerView *)player;
+/// 正在加载
+- (void)superPlayerLoading:(SuperPlayerView *)player;
 /// 播放错误通知
 - (void)superPlayerError:(SuperPlayerView *)player errCode:(int)code errMessage:(NSString *)why;
 // 需要通知到父view的事件在此添加
@@ -63,6 +65,8 @@ typedef NS_ENUM(NSInteger, SuperPlayerLayoutStyle) {
 @property (readonly)  BOOL isDragging;
 /// 是否加载成功
 @property (readonly)  BOOL  isLoaded;
+/// 是否隐藏fastView
+@property (nonatomic, assign) BOOL hiddenFastView;
 /// 设置封面图片
 @property (nonatomic) UIImageView *coverImageView;
 /// 重播按钮

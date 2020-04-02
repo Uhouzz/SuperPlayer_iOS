@@ -26,6 +26,8 @@
 @property (weak) id<PlayerSliderDelegate> delegate;
 @property (nonatomic) BOOL hiddenPoints;
 
+@property (nonatomic, assign) CGFloat thumbOffset;
+
 - (PlayerPoint *)addPoint:(GLfloat)where;
 
 @end

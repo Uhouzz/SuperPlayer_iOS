@@ -713,6 +713,7 @@ static UISlider * _volumeSlider;
     [self.controlView fadeOut:0.2];
     [self fastViewUnavaliable];
     [self.netWatcher stopWatch];
+    
     self.repeatBtn.hidden = NO;
     self.repeatBackBtn.hidden = NO;
     if ([self.delegate respondsToSelector:@selector(superPlayerDidEnd:)]) {
@@ -989,6 +990,9 @@ static UISlider * _volumeSlider;
 - (SuperPlayerFastView *)fastView
 {
     if (_fastView == nil) {
+        if (self.hiddenFastView) {
+            return nil;
+        }
         _fastView = [[SuperPlayerFastView alloc] init];
         [self addSubview:_fastView];
         [_fastView mas_makeConstraints:^(MASConstraintMaker *make) {
@@ -1013,6 +1017,9 @@ static UISlider * _volumeSlider;
     NSString *timeStr        = [NSString stringWithFormat:@"%@ / %@", currentTimeStr, totalTimeStr];
     if (self.isLive) {
         timeStr = [NSString stringWithFormat:@"%@", currentTimeStr];
+    } else {
+        CGFloat value = draggedTime / self.vodPlayer.duration;
+        [self.controlView setProgressTime:draggedTime totalTime:self.vodPlayer.duration progressValue:value playableValue:self.vodPlayer.playableDuration / self.vodPlayer.duration];
     }
     
     UIImage *thumbnail;
@@ -1078,6 +1085,9 @@ static UISlider * _volumeSlider;
     _state = state;
     // 控制菊花显示、隐藏
     if (state == StateBuffering) {
+        if ([self.delegate respondsToSelector:@selector(superPlayerLoading:)]) {
+            [self.delegate superPlayerLoading:self];
+        }
         [self.spinner startAnimating];
     } else {
         [self.spinner stopAnimating];
@@ -1268,7 +1278,6 @@ static UISlider * _volumeSlider;
     }
 }
 
-
 - (void)controlViewReload:(UIView *)controlView {
     if (self.isLive) {
         self.isShiftPlayback = NO;
@@ -1402,9 +1411,10 @@ static UISlider * _volumeSlider;
             self.playCurrentTime  = player.currentPlaybackTime;
             CGFloat totalTime     = player.duration;
             CGFloat value         = player.currentPlaybackTime / player.duration;
-
-            [self.controlView setProgressTime:self.playCurrentTime totalTime:totalTime progressValue:value playableValue:player.playableDuration / player.duration];
-
+            
+            if (!self.controlView.isDragging && !self.isDragging) {
+                [self.controlView setProgressTime:self.playCurrentTime totalTime:totalTime progressValue:value playableValue:player.playableDuration / player.duration];
+            }
         } else if (EvtID == PLAY_EVT_PLAY_END) {
             [self.controlView setProgressTime:[self playDuration] totalTime:[self playDuration] progressValue:1.f playableValue:1.f];
             [self moviePlayDidEnd];

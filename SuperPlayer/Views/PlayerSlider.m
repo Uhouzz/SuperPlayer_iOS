@@ -123,15 +123,15 @@
 
 - (CGRect)thumbRectForBounds:(CGRect)bounds trackRect:(CGRect)rect value:(float)value {
     
-    rect.origin.x = rect.origin.x - 10 ;
+    rect.origin.x = rect.origin.x - self.thumbOffset;
     
-    rect.size.width = rect.size.width +20;
+    rect.size.width = rect.size.width + self.thumbOffset * 2;
     
     return CGRectInset ([super thumbRectForBounds:bounds
                                         trackRect:rect
                                             value:value],
-                        10 ,
-                        10);
+                        self.thumbOffset ,
+                        self.thumbOffset);
     
 }
 @end
