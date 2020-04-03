@@ -122,16 +122,10 @@
 }
 
 - (CGRect)thumbRectForBounds:(CGRect)bounds trackRect:(CGRect)rect value:(float)value {
-    
-    rect.origin.x = rect.origin.x - self.thumbOffset;
-    
-    rect.size.width = rect.size.width + self.thumbOffset * 2;
-    
     return CGRectInset ([super thumbRectForBounds:bounds
                                         trackRect:rect
                                             value:value],
-                        self.thumbOffset ,
-                        self.thumbOffset);
-    
+                        -self.thumbOffset ,
+                        -self.thumbOffset);
 }
 @end
