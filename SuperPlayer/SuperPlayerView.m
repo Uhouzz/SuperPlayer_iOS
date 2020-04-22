@@ -1090,6 +1090,9 @@ static UISlider * _volumeSlider;
         }
         [self.spinner startAnimating];
     } else {
+        if ([self.delegate respondsToSelector:@selector(superPlayerLoadingEnd:)]) {
+            [self.delegate superPlayerLoadingEnd:self];
+        }
         [self.spinner stopAnimating];
     }
     if (state == StatePlaying) {

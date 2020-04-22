@@ -18,6 +18,8 @@
 - (void)superPlayerDidEnd:(SuperPlayerView *)player;
 /// 正在加载
 - (void)superPlayerLoading:(SuperPlayerView *)player;
+/// 结束加载
+- (void)superPlayerLoadingEnd:(SuperPlayerView *)player;
 /// 播放错误通知
 - (void)superPlayerError:(SuperPlayerView *)player errCode:(int)code errMessage:(NSString *)why;
 // 需要通知到父view的事件在此添加
