@@ -1414,12 +1414,11 @@ static UISlider * _volumeSlider;
             self.playCurrentTime  = player.currentPlaybackTime;
             CGFloat totalTime     = player.duration;
             CGFloat value         = player.currentPlaybackTime / player.duration;
-            
-            if (!self.controlView.isDragging && !self.isDragging) {
+            if (!self.controlView.isDragging && !self.isDragging && self.state != StateBuffering) {
                 [self.controlView setProgressTime:self.playCurrentTime totalTime:totalTime progressValue:value playableValue:player.playableDuration / player.duration];
             }
         } else if (EvtID == PLAY_EVT_PLAY_END) {
-            [self.controlView setProgressTime:[self playDuration] totalTime:[self playDuration] progressValue:1.f playableValue:1.f];
+            [self.controlView setProgressTime:0 totalTime:[self playCurrentTime] progressValue:0.f playableValue:0.f];
             [self moviePlayDidEnd];
         } else if (EvtID == PLAY_ERR_NET_DISCONNECT || EvtID == PLAY_ERR_FILE_NOT_FOUND || EvtID == PLAY_ERR_HLS_KEY /*|| EvtID == PLAY_ERR_VOD_LOAD_LICENSE_FAIL*/) {
             // DRM视频播放失败自动降级
