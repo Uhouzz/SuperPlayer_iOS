@@ -648,9 +648,12 @@ static UISlider * _volumeSlider;
             return;
         
         if (self.controlView.hidden) {
-            [[self.controlView fadeShow] fadeOut:5];
+            [self.controlView fadeShow];
         } else {
             [self.controlView fadeOut:0.2];
+        }
+        if ([self.delegate respondsToSelector:@selector(superPlayerSingleTap:)]) {
+            [self.delegate superPlayerSingleTap:self];
         }
     }
 }
@@ -808,6 +811,7 @@ static UISlider * _volumeSlider;
     if (!self.isLoaded || self.state == StateStopped) {
         return;
     }
+    self.seekTime = dragedSeconds;
     if (self.isLive) {
         [DataReport report:@"timeshift" param:nil];
         int ret = [self.livePlayer seek:dragedSeconds];
@@ -1414,8 +1418,15 @@ static UISlider * _volumeSlider;
             self.playCurrentTime  = player.currentPlaybackTime;
             CGFloat totalTime     = player.duration;
             CGFloat value         = player.currentPlaybackTime / player.duration;
-            if (!self.controlView.isDragging && !self.isDragging && self.state != StateBuffering) {
-                [self.controlView setProgressTime:self.playCurrentTime totalTime:totalTime progressValue:value playableValue:player.playableDuration / player.duration];
+            if (!self.controlView.isDragging && !self.isDragging) {
+                if (self.seekTime > 0) {//快进
+                    if (self.seekTime == self.playCurrentTime) {//只有到快进的时间点才继续更新进度
+                        [self.controlView setProgressTime:self.playCurrentTime totalTime:totalTime progressValue:value playableValue:player.playableDuration / player.duration];
+                        self.seekTime = 0;
+                    }
+                } else { //自动更新进度
+                    [self.controlView setProgressTime:self.playCurrentTime totalTime:totalTime progressValue:value playableValue:player.playableDuration / player.duration];
+                }
             }
         } else if (EvtID == PLAY_EVT_PLAY_END) {
             [self.controlView setProgressTime:0 totalTime:[self playCurrentTime] progressValue:0.f playableValue:0.f];

@@ -41,6 +41,9 @@ TXVodPlayListener, TXLivePlayListener, SuperPlayerControlViewDelegate, TXLiveBas
 @property (nonatomic, assign) CGFloat                sumTime;
 @property (nonatomic, assign) CGFloat                startVeloctyPoint;
 
+/// 快进的最终时间点
+@property (nonatomic, assign) CGFloat   seekTime;
+
 /** 定义一个实例变量，保存枚举值 */
 @property (nonatomic, assign) PanDirection           panDirection;
 /** 是否在调节音量*/

@@ -23,6 +23,9 @@
 /// 播放错误通知
 - (void)superPlayerError:(SuperPlayerView *)player errCode:(int)code errMessage:(NSString *)why;
 // 需要通知到父view的事件在此添加
+/// 点击事件
+- (void)superPlayerSingleTap:(SuperPlayerView *)player;
+
 @end
 
 /// 播放器的状态
