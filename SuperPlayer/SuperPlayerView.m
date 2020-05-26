@@ -1580,6 +1580,9 @@ static UISlider * _volumeSlider;
     } else if (([videoURL hasPrefix:@"https:"] || [videoURL hasPrefix:@"http:"]) && ([videoURL rangeOfString:@".flv"].length > 0)) {
         playType = PLAY_TYPE_LIVE_FLV;
     }
+    if (self.playAccURL) {
+        return PLAY_TYPE_LIVE_RTMP_ACC;
+    }
     return playType;
 }
 
