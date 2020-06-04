@@ -56,26 +56,26 @@ static UISlider * _volumeSlider;
     self.netWatcher = [[NetWatcher alloc] init];
     
     CGRect frame = CGRectMake(0, -100, 10, 0);
-    self.volumeView = [[MPVolumeView alloc] initWithFrame:frame];
-    [self.volumeView sizeToFit];
-    for (UIWindow *window in [[UIApplication sharedApplication] windows]) {
-        if (!window.isHidden) {
-            [window addSubview:self.volumeView];
-            break;
-        }
-    }
+//    self.volumeView = [[MPVolumeView alloc] initWithFrame:frame];
+//    [self.volumeView sizeToFit];
+//    for (UIWindow *window in [[UIApplication sharedApplication] windows]) {
+//        if (!window.isHidden) {
+//            [window addSubview:self.volumeView];
+//            break;
+//        }
+//    }
     
     _fullScreenBlackView = [UIView new];
     _fullScreenBlackView.backgroundColor = [UIColor blackColor];
     
     // 单例slider
-    _volumeSlider = nil;
-    for (UIView *view in [self.volumeView subviews]){
-        if ([view.class.description isEqualToString:@"MPVolumeSlider"]){
-            _volumeSlider = (UISlider *)view;
-            break;
-        }
-    }
+//    _volumeSlider = nil;
+//    for (UIView *view in [self.volumeView subviews]){
+//        if ([view.class.description isEqualToString:@"MPVolumeSlider"]){
+//            _volumeSlider = (UISlider *)view;
+//            break;
+//        }
+//    }
     
     _playerConfig = [[SuperPlayerViewConfig alloc] init];
     // 添加通知
@@ -837,6 +837,9 @@ static UISlider * _volumeSlider;
 - (BOOL)gestureRecognizerShouldBegin:(UIGestureRecognizer *)gestureRecognizer
 {
     if ([gestureRecognizer isKindOfClass:[UITapGestureRecognizer class]]) {
+        if (self.disableTapGesture) {
+            return NO;
+        }
         return YES;
     }
 
@@ -1490,8 +1493,8 @@ static UISlider * _volumeSlider;
 #pragma mark - 直播回调
 
 - (void)onPlayEvent:(int)EvtID withParam:(NSDictionary *)param {
+    NSLog(@"判断%d",EvtID);
     NSDictionary* dict = param;
-    
     dispatch_async(dispatch_get_main_queue(), ^{
 
         if (EvtID != PLAY_EVT_PLAY_PROGRESS) {
@@ -1509,6 +1512,7 @@ static UISlider * _volumeSlider;
                 [self layoutSubviews];  // 防止横屏状态下添加view显示不全
                 self.state = StatePlaying;
                 
+            
                 if ([self.delegate respondsToSelector:@selector(superPlayerDidStart:)]) {
                     [self.delegate superPlayerDidStart:self];
                 }
@@ -1602,7 +1606,6 @@ static UISlider * _volumeSlider;
 }
 
 #pragma mark - middle btn
-
 - (UIButton *)middleBlackBtn
 {
     if (_middleBlackBtn == nil) {

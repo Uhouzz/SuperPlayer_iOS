@@ -51,6 +51,9 @@ typedef NS_ENUM(NSInteger, SuperPlayerLayoutStyle) {
 
 @property (nonatomic, assign) SuperPlayerLayoutStyle layoutStyle;
 
+/// 播放器标识
+@property (nonatomic, copy) NSString *identifier;
+
 /// 设置播放器的父view。播放过程中调用可实现播放窗口转移
 @property (nonatomic, weak) UIView *fatherView;
 /// 播放acc加速流
@@ -67,6 +70,8 @@ typedef NS_ENUM(NSInteger, SuperPlayerLayoutStyle) {
 @property (nonatomic) SuperPlayerControlView *controlView;
 /// 是否允许竖屏手势
 @property (nonatomic) BOOL disableGesture;
+/// 是否允许点击手势
+@property (nonatomic) BOOL disableTapGesture;
 /// 是否在手势中
 @property (readonly)  BOOL isDragging;
 /// 是否加载成功
