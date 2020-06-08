@@ -35,5 +35,7 @@ typedef void(^SuperPlayerWindowEventHandler)(void);
 
 @property (nonatomic, assign) CGRect floatViewRect;
 
+@property (nonatomic, weak) UIView *customView;
+
 
 @end

@@ -92,6 +92,9 @@
     
     [_rootView bringSubviewToFront:_backBtn];
     [_rootView bringSubviewToFront:_closeBtn];
+    if (self.customView) {
+        [_rootView bringSubviewToFront:self.customView];
+    }
 //    _backBtn.m_top(8).m_left(8);
     _closeBtn.mm_width(42).mm_height(42).mm_top(0).mm_right(0);
     
