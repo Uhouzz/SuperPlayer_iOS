@@ -56,26 +56,26 @@ static UISlider * _volumeSlider;
     self.netWatcher = [[NetWatcher alloc] init];
     
     CGRect frame = CGRectMake(0, -100, 10, 0);
-//    self.volumeView = [[MPVolumeView alloc] initWithFrame:frame];
-//    [self.volumeView sizeToFit];
-//    for (UIWindow *window in [[UIApplication sharedApplication] windows]) {
-//        if (!window.isHidden) {
-//            [window addSubview:self.volumeView];
-//            break;
-//        }
-//    }
+    self.volumeView = [[MPVolumeView alloc] initWithFrame:frame];
+    [self.volumeView sizeToFit];
+    for (UIWindow *window in [[UIApplication sharedApplication] windows]) {
+        if (!window.isHidden) {
+            [window addSubview:self.volumeView];
+            break;
+        }
+    }
     
     _fullScreenBlackView = [UIView new];
     _fullScreenBlackView.backgroundColor = [UIColor blackColor];
     
     // 单例slider
-//    _volumeSlider = nil;
-//    for (UIView *view in [self.volumeView subviews]){
-//        if ([view.class.description isEqualToString:@"MPVolumeSlider"]){
-//            _volumeSlider = (UISlider *)view;
-//            break;
-//        }
-//    }
+    _volumeSlider = nil;
+    for (UIView *view in [self.volumeView subviews]){
+        if ([view.class.description isEqualToString:@"MPVolumeSlider"]){
+            _volumeSlider = (UISlider *)view;
+            break;
+        }
+    }
     
     _playerConfig = [[SuperPlayerViewConfig alloc] init];
     // 添加通知
@@ -528,23 +528,35 @@ static UISlider * _volumeSlider;
         // 这个地方加判断是为了从全屏的一侧,直接到全屏的另一侧不用修改限制,否则会出错;
         if (_layoutStyle != SuperPlayerLayoutStyleFullScreen)  { //UIInterfaceOrientationIsPortrait(currentOrientation)) {
             [self removeFromSuperview];
+            CGFloat height = self.isVFullScreen ? ScreenHeight : ScreenWidth;
+            CGFloat width = self.isVFullScreen ? ScreenWidth : ScreenHeight;
+            
             [[UIApplication sharedApplication].keyWindow addSubview:_fullScreenBlackView];
             [_fullScreenBlackView mas_remakeConstraints:^(MASConstraintMaker *make) {
-                make.width.equalTo(@(ScreenHeight));
-                make.height.equalTo(@(ScreenWidth));
+                make.width.equalTo(@(width));
+                make.height.equalTo(@(height));
                 make.center.equalTo([UIApplication sharedApplication].keyWindow);
             }];
 
             [[UIApplication sharedApplication].keyWindow addSubview:self];
             [self mas_remakeConstraints:^(MASConstraintMaker *make) {
                 if (IsIPhoneX) {
-                    make.width.equalTo(@(ScreenHeight - self.mm_safeAreaTopGap * 2));
+                    if(self.isVFullScreen){
+                        make.width.equalTo(@(width));
+                        make.height.equalTo(@(height - self.mm_safeAreaTopGap - self.mm_safeAreaBottomGap));
+                    }else{
+                        make.width.equalTo(@(width - self.mm_safeAreaTopGap * 2));
+                        make.height.equalTo(@(height));
+                    }
+                    
                 } else {
-                    make.width.equalTo(@(ScreenHeight));
+                    make.width.equalTo(@(width));
+                    make.height.equalTo(@(height));
                 }
-                make.height.equalTo(@(ScreenWidth));
+
                 make.center.equalTo([UIApplication sharedApplication].keyWindow);
             }];
+            
         }
     } else {
         [_fullScreenBlackView removeFromSuperview];
@@ -593,6 +605,9 @@ static UISlider * _volumeSlider;
     // 状态条的方向已经设置过,所以这个就是你想要旋转的方向
     UIInterfaceOrientation interfaceOrientation = [UIApplication sharedApplication].statusBarOrientation;
     if (interfaceOrientation == (UIInterfaceOrientation)orientation) {
+        return CGAffineTransformIdentity;
+    }
+    if (interfaceOrientation == UIInterfaceOrientationPortrait && self.isVFullScreen) {
         return CGAffineTransformIdentity;
     }
     // 根据要进行旋转的方向来计算旋转的角度
@@ -1079,7 +1094,7 @@ static UISlider * _volumeSlider;
     return YES;
 }
 
-#pragma mark - Setter 
+#pragma mark - Setter
 
 
 /**
@@ -1153,7 +1168,7 @@ static UISlider * _volumeSlider;
 - (SuperPlayerControlView *)controlView
 {
     if (_controlView == nil) {
-        self.controlView = [[SPDefaultControlView alloc] initWithFrame:CGRectZero];
+        self.controlView = [[SPWeiboControlView alloc] initWithFrame:CGRectZero];
     }
     return _controlView;
 }

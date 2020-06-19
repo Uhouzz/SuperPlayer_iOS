@@ -62,6 +62,8 @@ typedef NS_ENUM(NSInteger, SuperPlayerLayoutStyle) {
 @property (nonatomic, assign) SuperPlayerState state;
 /// 是否全屏
 @property (nonatomic, assign, setter=setFullScreen:) BOOL isFullScreen;
+/// 是否垂直全屏
+@property (nonatomic, assign, setter=setVFullScreen:) BOOL isVFullScreen;
 /// 是否锁定旋转
 @property (nonatomic, assign) BOOL isLockScreen;
 /// 是否是直播流
