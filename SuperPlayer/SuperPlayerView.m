@@ -664,6 +664,10 @@ static UISlider * _volumeSlider;
         
         if (self.controlView.hidden) {
             [self.controlView fadeShow];
+            
+            dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1.5 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+                [self.controlView fadeOut:0.35];
+            });
         } else {
             [self.controlView fadeOut:0.2];
         }
@@ -1398,7 +1402,10 @@ static UISlider * _volumeSlider;
             [self.vodPlayer setupVideoWidget:self insertIndex:0];
             [self layoutSubviews];  // 防止横屏状态下添加view显示不全
             self.state = StatePlaying;
-
+            //开始播放后自动隐藏
+            dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1.5 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+                [self.controlView fadeOut:0.35];
+            });
 //            if (self.playerModel.playDefinitions.count == 0) {
                 [self updateBitrates:player.supportedBitrates];
 //            }
