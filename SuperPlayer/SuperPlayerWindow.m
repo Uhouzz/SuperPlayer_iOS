@@ -18,6 +18,7 @@
 
 @interface SuperPlayerWindow()<TXVodPlayListener>
 @property (weak) UIView *origFatherView;
+@property (nonatomic, assign) BOOL hiddenfastView;
 @end
 
 @implementation SuperPlayerWindow {
@@ -84,10 +85,11 @@
     self.hidden = NO;
     
     self.origFatherView = self.superPlayer.fatherView;
+    self.hiddenfastView = self.superPlayer.hiddenFastView;
     if (self.origFatherView != _rootView) {
         self.superPlayer.fatherView = _rootView;
     }
-    
+    self.superPlayer.hiddenFastView = YES;
     [self.superPlayer.controlView fadeOut:0.01];
     
     [_rootView bringSubviewToFront:_backBtn];
@@ -109,6 +111,7 @@
     [_rootView removeFromSuperview];
     self.hidden = YES;
     
+    self.superPlayer.hiddenFastView = self.hiddenfastView;
     self.superPlayer.fatherView = self.origFatherView;
     
     _isShowing = NO;
