@@ -287,7 +287,7 @@ static UISlider * _volumeSlider;
  */
 - (void)configTXPlayer {
     LOG_ME;
-    self.backgroundColor = [UIColor blackColor];
+    self.backgroundColor = self.customBackgroundColor ? : [UIColor blackColor];
     
     if (_playerConfig.enableLog) {
         [TXLiveBase setLogLevel:LOGLEVEL_DEBUG];
@@ -1508,7 +1508,6 @@ static UISlider * _volumeSlider;
 #pragma mark - 直播回调
 
 - (void)onPlayEvent:(int)EvtID withParam:(NSDictionary *)param {
-    NSLog(@"判断%d",EvtID);
     NSDictionary* dict = param;
     dispatch_async(dispatch_get_main_queue(), ^{
 
@@ -1628,6 +1627,7 @@ static UISlider * _volumeSlider;
         [_middleBlackBtn setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
         _middleBlackBtn.titleLabel.font = [UIFont systemFontOfSize:14.0];
         _middleBlackBtn.backgroundColor = RGBA(0, 0, 0, 0.7);
+        _middleBlackBtn.hidden = YES;
         [_middleBlackBtn addTarget:self action:@selector(middleBlackBtnClick:) forControlEvents:UIControlEventTouchUpInside];
         [self addSubview:_middleBlackBtn];
         [_middleBlackBtn mas_makeConstraints:^(MASConstraintMaker *make) {
