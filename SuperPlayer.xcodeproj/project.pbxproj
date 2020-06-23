@@ -37,6 +37,7 @@
 		91A1D65B2147769500EA9A19 /* MoreContentView.m in Sources */ = {isa = PBXBuildFile; fileRef = 91A1D5C9214673F300EA9A19 /* MoreContentView.m */; };
 		91A1D65C2147769500EA9A19 /* PlayerSlider.m in Sources */ = {isa = PBXBuildFile; fileRef = 91A1D5CB214673F300EA9A19 /* PlayerSlider.m */; };
 		91A1D65E2147769500EA9A19 /* SuperPlayerFastView.m in Sources */ = {isa = PBXBuildFile; fileRef = 91A1D5CF214673F300EA9A19 /* SuperPlayerFastView.m */; };
+		EAB08BAA24A1F3A100FA1537 /* SPBundleUtil.m in Sources */ = {isa = PBXBuildFile; fileRef = EAB08BA924A1F3A100FA1537 /* SPBundleUtil.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -110,6 +111,9 @@
 		91A1D5EB214673F400EA9A19 /* SuperPlayerView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SuperPlayerView.m; sourceTree = "<group>"; };
 		91A1D6362147703B00EA9A19 /* libSuperPlayer.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libSuperPlayer.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		91A1D6482147749100EA9A19 /* SuperPlayer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SuperPlayer.h; sourceTree = "<group>"; };
+		EAB08BA324A1ECE600FA1537 /* SuperPlayer.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = SuperPlayer.bundle; sourceTree = "<group>"; };
+		EAB08BA824A1F3A100FA1537 /* SPBundleUtil.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SPBundleUtil.h; sourceTree = "<group>"; };
+		EAB08BA924A1F3A100FA1537 /* SPBundleUtil.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SPBundleUtil.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -154,6 +158,7 @@
 		91A1D5AF2146719900EA9A19 /* SuperPlayer */ = {
 			isa = PBXGroup;
 			children = (
+				EAB08BA224A1ECE600FA1537 /* Resource */,
 				9174B97C22535355008BB3A1 /* Skins */,
 				9174B977225352EF008BB3A1 /* SuperPlayerControlView.h */,
 				9174B979225352EF008BB3A1 /* SuperPlayerControlView.m */,
@@ -210,6 +215,8 @@
 				91A1D5DA214673F300EA9A19 /* NetWatcher.m */,
 				9165F736214FCC9300F5BB88 /* TXCUrl.h */,
 				9165F737214FCC9300F5BB88 /* TXCUrl.m */,
+				EAB08BA824A1F3A100FA1537 /* SPBundleUtil.h */,
+				EAB08BA924A1F3A100FA1537 /* SPBundleUtil.m */,
 			);
 			path = Utils;
 			sourceTree = "<group>";
@@ -232,6 +239,14 @@
 			children = (
 			);
 			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		EAB08BA224A1ECE600FA1537 /* Resource */ = {
+			isa = PBXGroup;
+			children = (
+				EAB08BA324A1ECE600FA1537 /* SuperPlayer.bundle */,
+			);
+			path = Resource;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -274,6 +289,7 @@
 			hasScannedForEncodings = 0;
 			knownRegions = (
 				en,
+				"zh-Hans",
 			);
 			mainGroup = 91A1D5A32146719900EA9A19;
 			productRefGroup = 91A1D5AE2146719900EA9A19 /* Products */;
@@ -304,6 +320,7 @@
 				919D18F521533DAC00947BF5 /* UINavigationController+SuperPlayerRotation.m in Sources */,
 				91A1D65C2147769500EA9A19 /* PlayerSlider.m in Sources */,
 				91A1D65B2147769500EA9A19 /* MoreContentView.m in Sources */,
+				EAB08BAA24A1F3A100FA1537 /* SPBundleUtil.m in Sources */,
 				9174B97B225352F0008BB3A1 /* SuperPlayerControlView.m in Sources */,
 				91A1D65A2147769500EA9A19 /* MMMaterialDesignSpinner.m in Sources */,
 				91A1D6582147768C00EA9A19 /* J2Obj.m in Sources */,

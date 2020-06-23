@@ -7,6 +7,7 @@
 #import "DataReport.h"
 #import "TXCUrl.h"
 #import "StrUtils.h"
+#import "SPBundleUtil.h"
 #import "UIView+Fade.h"
 #import "TXBitrateItemHelper.h"
 #import "UIView+MMLayout.h"
@@ -197,7 +198,8 @@ static UISlider * _volumeSlider;
 
 - (void)getPlayInfoFail:(NSNotification *)notification {
     // error 错误信息
-    [self showMiddleBtnMsg:kStrLoadFaildRetry withAction:ActionRetry];
+    [self showMiddleBtnMsg:[SPBundleUtil spLocalizedStringForKey:kStrLoadFaildRetry]
+                withAction:ActionRetry];
     [self.spinner stopAnimating];
     if ([self.delegate respondsToSelector:@selector(superPlayerError:errCode:errMessage:)]) {
         [self.delegate superPlayerError:self errCode:-1000 errMessage:@"网络请求失败"];
@@ -665,8 +667,10 @@ static UISlider * _volumeSlider;
         if (self.controlView.hidden) {
             [self.controlView fadeShow];
             if (!self.disableAutoHideControl) {
-                dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1.5 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-                    [self.controlView fadeOut:0.35];
+                dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(2.5 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+                    if (!self.controlView.isShowSecondView) {
+                        [self.controlView fadeOut:0.35];
+                    }
                 });
             }
         } else {
@@ -1406,7 +1410,7 @@ static UISlider * _volumeSlider;
             self.state = StatePlaying;
             //开始播放后自动隐藏
             if (!self.disableAutoHideControl) {
-                dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1.5 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+                dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(2.5 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
                     [self.controlView fadeOut:0.35];
                 });
             }
@@ -1480,9 +1484,11 @@ static UISlider * _volumeSlider;
 //            }
             
             if (EvtID == PLAY_ERR_NET_DISCONNECT) {
-                [self showMiddleBtnMsg:kStrBadNetRetry withAction:ActionContinueReplay];
+                [self showMiddleBtnMsg:[SPBundleUtil spLocalizedStringForKey:kStrBadNetRetry]
+                            withAction:ActionContinueReplay];
             } else {
-                [self showMiddleBtnMsg:kStrLoadFaildRetry withAction:ActionRetry];
+                [self showMiddleBtnMsg:[SPBundleUtil spLocalizedStringForKey:kStrLoadFaildRetry]
+                            withAction:ActionRetry];
             }
             self.state = StateFailed;
             [player stopPlay];
@@ -1554,7 +1560,8 @@ static UISlider * _volumeSlider;
                 [self showMiddleBtnMsg:kStrTimeShiftFailed withAction:ActionRetry];
                 [self.middleBlackBtn fadeOut:2];
             } else {
-                [self showMiddleBtnMsg:kStrBadNetRetry withAction:ActionRetry];
+                [self showMiddleBtnMsg:[SPBundleUtil spLocalizedStringForKey:kStrBadNetRetry]
+                            withAction:ActionRetry];
                 self.state = StateFailed;
             }
             if ([self.delegate respondsToSelector:@selector(superPlayerError:errCode:errMessage:)]) {

@@ -14,6 +14,7 @@
 #import "SuperPlayerControlView.h"
 #import "SuperPlayerView+Private.h"
 #import "DataReport.h"
+#import "SPBundleUtil.h"
 
 #define TAG_1_SPEED 1001
 #define TAG_2_SPEED 1002
@@ -97,6 +98,11 @@
         _mirrorCell.hidden = YES;
     }
     
+    // 用户暂时不需要
+    _mirrorCell.hidden = YES;
+    _hwCell.hidden = YES;
+    
+    
     _hwCell.mm_top(_contentHeight);
     _contentHeight += _hwCell.mm_h;
 }
@@ -109,7 +115,7 @@
         
         // 声音
         UILabel *sound = [UILabel new];
-        sound.text = @"声音";
+        sound.text = [SPBundleUtil spLocalizedStringForKey:@"voice"];
         sound.textColor = [UIColor whiteColor];
         [sound sizeToFit];
         [_soundCell addSubview:sound];
@@ -154,7 +160,7 @@
         
         // 亮度
         UILabel *ligth = [UILabel new];
-        ligth.text = @"亮度";
+        ligth.text = [SPBundleUtil spLocalizedStringForKey:@"brightness"];
         ligth.textColor = [UIColor whiteColor];
         [ligth sizeToFit];
         [_ligthCell addSubview:ligth];
@@ -201,14 +207,14 @@
         
         // 倍速
         UILabel *speed = [UILabel new];
-        speed.text = @"倍速播放";
+        speed.text = [SPBundleUtil spLocalizedStringForKey:@"speed"];
         speed.textColor = [UIColor whiteColor];
         [speed sizeToFit];
         [_speedCell addSubview:speed];
         speed.mm__centerY(_speedCell.mm_h/2);
         
         UIButton *speed1 = [UIButton buttonWithType:UIButtonTypeCustom];
-        [speed1 setTitle:@"1.0X" forState:UIControlStateNormal];
+        [speed1 setTitle:@"1.0" forState:UIControlStateNormal];
         [speed1 setTitleColor:TintColor forState:UIControlStateSelected];
         speed1.selected = YES;
         speed1.tag = TAG_1_SPEED;
@@ -220,7 +226,7 @@
 
         
         UIButton *speed2 = [UIButton buttonWithType:UIButtonTypeCustom];
-        [speed2 setTitle:@"1.25X" forState:UIControlStateNormal];
+        [speed2 setTitle:@"1.25" forState:UIControlStateNormal];
         [speed2 setTitleColor:TintColor forState:UIControlStateSelected];
         speed2.tag = TAG_2_SPEED;
         [speed2 sizeToFit];
@@ -231,7 +237,7 @@
   
         
         UIButton *speed3 = [UIButton buttonWithType:UIButtonTypeCustom];
-        [speed3 setTitle:@"1.5X" forState:UIControlStateNormal];
+        [speed3 setTitle:@"1.5" forState:UIControlStateNormal];
         [speed3 setTitleColor:TintColor forState:UIControlStateSelected];
         speed3.tag = TAG_3_SPEED;
         [speed3 sizeToFit];
@@ -241,7 +247,7 @@
         speed3.mm_left(speed2.mm_maxX+12).mm__centerY(_speedCell.mm_h/2);
         
         UIButton *speed4 = [UIButton buttonWithType:UIButtonTypeCustom];
-        [speed4 setTitle:@"2.0X" forState:UIControlStateNormal];
+        [speed4 setTitle:@"2.0" forState:UIControlStateNormal];
         [speed4 setTitleColor:TintColor forState:UIControlStateSelected];
         speed4.tag = TAG_4_SPEED;
         [speed4 sizeToFit];
