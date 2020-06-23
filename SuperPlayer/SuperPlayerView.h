@@ -103,6 +103,9 @@ typedef NS_ENUM(NSInteger, SuperPlayerLayoutStyle) {
 @property SuperPlayerViewConfig *playerConfig;
 /// 循环播放
 @property (nonatomic) BOOL loop;
+/// 开始播放后是否自动隐藏控制区
+@property (nonatomic, assign) BOOL disableAutoHideControl;
+
 /**
  * 视频雪碧图
  */
