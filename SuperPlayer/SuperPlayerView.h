@@ -80,7 +80,8 @@ typedef NS_ENUM(NSInteger, SuperPlayerLayoutStyle) {
 @property (readonly)  BOOL  isLoaded;
 /// 自定义背景色，默认为黑色
 @property (nonatomic, strong) UIColor *customBackgroundColor;
-
+/// 是否禁用网络监测
+@property (nonatomic, assign) BOOL disableNetWatcher;
 /// 是否隐藏fastView
 @property (nonatomic, assign) BOOL hiddenFastView;
 /// 设置封面图片

@@ -54,8 +54,6 @@ static UISlider * _volumeSlider;
  */
 - (void)initializeThePlayer {
     LOG_ME;
-    self.netWatcher = [[NetWatcher alloc] init];
-    
     CGRect frame = CGRectMake(0, -100, 10, 0);
     self.volumeView = [[MPVolumeView alloc] initWithFrame:frame];
     [self.volumeView sizeToFit];
@@ -1759,6 +1757,16 @@ static UISlider * _volumeSlider;
         }];
     }
     return _coverImageView;
+}
+
+- (NetWatcher *)netWatcher {
+    if (self.disableNetWatcher) {
+        return nil;
+    }
+    if (!_netWatcher) {
+        _netWatcher = [[NetWatcher alloc] init];
+    }
+    return _netWatcher;
 }
 
 @end
