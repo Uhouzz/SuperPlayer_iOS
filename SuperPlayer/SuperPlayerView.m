@@ -129,6 +129,7 @@ static UISlider * _volumeSlider;
         if ([innerView isKindOfClass:NSClassFromString(@"TXIJKSDLGLView")] ||
             [innerView isKindOfClass:NSClassFromString(@"TXCAVPlayerView")]) {
             innerView.frame = self.bounds;
+            innerView.backgroundColor = self.playerBackgroundColor ? : [UIColor blackColor];
         }
     }
 }
@@ -405,6 +406,8 @@ static UISlider * _volumeSlider;
     self.repeatBackBtn.hidden = YES;
     self.playDidEnd = NO;
     [self.middleBlackBtn fadeOut:0.1];
+     
+    self.coverImageView.backgroundColor = self.playerBackgroundColor ? : [UIColor blackColor];
 }
 
 /**
@@ -1123,7 +1126,9 @@ static UISlider * _volumeSlider;
         if ([self.delegate respondsToSelector:@selector(superPlayerLoadingEnd:)]) {
             [self.delegate superPlayerLoadingEnd:self];
         }
-        [self.spinner stopAnimating];
+        if (!self.autoAdjustRenderMode) {
+            [self.spinner stopAnimating];
+        }
     }
     if (state == StatePlaying) {
         
@@ -1135,10 +1140,12 @@ static UISlider * _volumeSlider;
                                                      name:@"AVSystemController_SystemVolumeDidChangeNotification"
                                                    object:nil];
         
-        if (self.coverImageView.alpha == 1) {
-            [UIView animateWithDuration:0.2 animations:^{
-                self.coverImageView.alpha = 0;
-            }];
+        if (!self.autoAdjustRenderMode) {
+            if (self.coverImageView.alpha == 1) {
+                [UIView animateWithDuration:0.2 animations:^{
+                    self.coverImageView.alpha = 0;
+                }];
+            }
         }
     } else if (state == StateFailed) {
         
@@ -1506,6 +1513,56 @@ static UISlider * _volumeSlider;
      });
 }
 
+-(void) onNetStatus:(TXVodPlayer *)player withParam:(NSDictionary*)param {
+    if (!self.autoAdjustRenderMode) {
+        return;
+    }
+    
+    CGFloat videoWidth = [[param objectForKey:NET_STATUS_VIDEO_WIDTH] floatValue];
+    CGFloat videoHeight = [[param objectForKey:NET_STATUS_VIDEO_HEIGHT] floatValue];
+    if (videoWidth == 0 || videoHeight == 0) {
+        return;
+    }
+    [self.spinner stopAnimating];
+    if (videoWidth > videoHeight) {
+        if (self.playerConfig.renderMode == RENDER_MODE_FILL_SCREEN) {
+            self.coverImageView.alpha = 1;
+            self.playerConfig.renderMode = RENDER_MODE_FILL_EDGE;
+            [CATransaction begin];
+            [CATransaction setDisableActions:YES];
+            [self.vodPlayer setRenderMode:self.playerConfig.renderMode];
+            [CATransaction commit];
+            dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.2 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+                self.coverImageView.alpha = 0;
+            });
+        } else {
+            if (self.coverImageView.alpha == 1) {
+                [UIView animateWithDuration:0.2 animations:^{
+                    self.coverImageView.alpha = 0;
+                }];
+            }
+        }
+    } else {
+        if (self.playerConfig.renderMode == RENDER_MODE_FILL_EDGE) {
+            self.coverImageView.alpha = 1;
+            self.playerConfig.renderMode = RENDER_MODE_FILL_SCREEN;
+            [CATransaction begin];
+            [CATransaction setDisableActions:YES];
+            [self.vodPlayer setRenderMode:self.playerConfig.renderMode];
+            [CATransaction commit];
+            dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.2 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+                self.coverImageView.alpha = 0;
+            });
+        } else {
+            if (self.coverImageView.alpha == 1) {
+                [UIView animateWithDuration:0.2 animations:^{
+                    self.coverImageView.alpha = 0;
+                }];
+            }
+        }
+    }
+}
+
 - (void)updateBitrates:(NSArray<TXBitrateItem *> *)bitrates;
 {
     if (bitrates.count > 0) {
@@ -1540,8 +1597,6 @@ static UISlider * _volumeSlider;
                 [self.livePlayer setupVideoWidget:CGRectZero containView:self insertIndex:0];
                 [self layoutSubviews];  // 防止横屏状态下添加view显示不全
                 self.state = StatePlaying;
-                
-            
                 if ([self.delegate respondsToSelector:@selector(superPlayerDidStart:)]) {
                     [self.delegate superPlayerDidStart:self];
                 }
@@ -1598,6 +1653,55 @@ static UISlider * _volumeSlider;
             }
         }
     });
+}
+
+- (void)onNetStatus:(NSDictionary *)param {
+    if (!self.autoAdjustRenderMode) {
+        return;
+    }
+    CGFloat videoWidth = [[param objectForKey:NET_STATUS_VIDEO_WIDTH] floatValue];
+    CGFloat videoHeight = [[param objectForKey:NET_STATUS_VIDEO_HEIGHT] floatValue];
+    if (videoWidth == 0 || videoHeight == 0) {
+        return;
+    }
+    [self.spinner stopAnimating];
+    if (videoWidth > videoHeight) {
+        if (self.playerConfig.renderMode == RENDER_MODE_FILL_SCREEN) {
+            self.coverImageView.alpha = 1;
+            self.playerConfig.renderMode = RENDER_MODE_FILL_EDGE;
+            [CATransaction begin];
+            [CATransaction setDisableActions:YES];
+            [self.livePlayer setRenderMode:self.playerConfig.renderMode];
+            [CATransaction commit];
+            dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+                self.coverImageView.alpha = 0;
+            });
+        } else {
+            if (self.coverImageView.alpha == 1) {
+                [UIView animateWithDuration:0.2 animations:^{
+                    self.coverImageView.alpha = 0;
+                }];
+            }
+        }
+    } else {
+        if (self.playerConfig.renderMode == RENDER_MODE_FILL_EDGE) {
+            self.coverImageView.alpha = 1;
+            self.playerConfig.renderMode = RENDER_MODE_FILL_SCREEN;
+            [CATransaction begin];
+            [CATransaction setDisableActions:YES];
+            [self.livePlayer setRenderMode:self.playerConfig.renderMode];
+            [CATransaction commit];
+            dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+                self.coverImageView.alpha = 0;
+            });
+        } else {
+            if (self.coverImageView.alpha == 1) {
+                [UIView animateWithDuration:0.2 animations:^{
+                    self.coverImageView.alpha = 0;
+                }];
+            }
+        }
+    }
 }
 
 // 日志回调

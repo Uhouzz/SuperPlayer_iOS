@@ -106,6 +106,10 @@ typedef NS_ENUM(NSInteger, SuperPlayerLayoutStyle) {
 @property (nonatomic) BOOL loop;
 /// 开始播放后是否自动隐藏控制区
 @property (nonatomic, assign) BOOL disableAutoHideControl;
+/// 自动调整渲染模式
+@property (nonatomic, assign) BOOL autoAdjustRenderMode;
+/// 播放器背景色
+@property (nonatomic, strong) UIColor *playerBackgroundColor;
 
 /**
  * 视频雪碧图
