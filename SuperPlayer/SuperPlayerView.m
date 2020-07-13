@@ -272,6 +272,7 @@ static UISlider * _volumeSlider;
     if (!self.isLoaded)
         return;
     [self.controlView setPlayState:NO];
+    [self.controlView fadeShow];
     self.isPauseByUser = YES;
     self.state = StatePause;
     if (self.isLive) {
@@ -658,8 +659,8 @@ static UISlider * _volumeSlider;
  */
 - (void)singleTapAction:(UIGestureRecognizer *)gesture {
     if (gesture.state == UIGestureRecognizerStateRecognized) {
-        
-        if (self.playDidEnd) {
+        //暂停状态和 结束状态不执行隐藏控制器
+        if (self.playDidEnd || self.state == StatePause) {
             return;
         }
         if (SuperPlayerWindowShared.isShowing)
@@ -1413,8 +1414,8 @@ static UISlider * _volumeSlider;
             [self.vodPlayer setupVideoWidget:self insertIndex:0];
             [self layoutSubviews];  // 防止横屏状态下添加view显示不全
             self.state = StatePlaying;
-            //开始播放后自动隐藏
-            if (!self.disableAutoHideControl) {
+            //1.开始播放后自动隐藏 2.如果视频自动播放才需要隐藏
+            if (!self.disableAutoHideControl && self.autoPlay) {
                 dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(2.5 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
                     [self.controlView fadeOut:0.35];
                 });
