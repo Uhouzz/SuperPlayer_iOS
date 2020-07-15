@@ -272,13 +272,13 @@ static UISlider * _volumeSlider;
     if (!self.isLoaded)
         return;
     [self.controlView setPlayState:NO];
-    [self.controlView fadeShow];
     self.isPauseByUser = YES;
     self.state = StatePause;
     if (self.isLive) {
         [_livePlayer pause];
     } else {
         [_vodPlayer pause];
+        [self.controlView fadeShow];
     }
 }
 
