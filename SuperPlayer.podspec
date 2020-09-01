@@ -11,7 +11,7 @@ Pod::Spec.new do |spec|
     spec.requires_arc = true
 
     spec.dependency 'AFNetworking','4.0.1'
-    spec.dependency 'SDWebImage'
+    spec.dependency 'SDWebImage','5.7'
     spec.dependency 'Masonry'
     spec.dependency 'MMLayout','0.2.0'
 
