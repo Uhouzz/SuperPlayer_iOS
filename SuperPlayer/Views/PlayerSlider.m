@@ -130,4 +130,14 @@
                         -self.thumbOffset ,
                         -self.thumbOffset);
 }
+
+- (BOOL)pointInside:(CGPoint)point withEvent:(UIEvent *)event {
+    if (UIEdgeInsetsEqualToEdgeInsets(self.hitTestEdgeInsets, UIEdgeInsetsZero)) {
+        return [super pointInside:point withEvent:event];
+    }
+    CGRect relativeFrame = self.bounds;
+    CGRect hitFrame = UIEdgeInsetsInsetRect(relativeFrame, self.hitTestEdgeInsets);
+    return CGRectContainsPoint(hitFrame, point);
+}
+
 @end

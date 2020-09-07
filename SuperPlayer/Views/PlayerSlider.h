@@ -27,6 +27,7 @@
 @property (nonatomic) BOOL hiddenPoints;
 
 @property (nonatomic, assign) CGFloat thumbOffset;
+@property (nonatomic, assign) UIEdgeInsets hitTestEdgeInsets;
 
 - (PlayerPoint *)addPoint:(GLfloat)where;
 
