@@ -261,6 +261,10 @@ static UISlider * _volumeSlider;
         [_livePlayer resume];
     } else {
         [_vodPlayer resume];
+        if (!self.disableAutoHideControl) {
+            [NSObject cancelPreviousPerformRequestsWithTarget:self selector:@selector(controlViewFadeOut) object:nil];
+            [self performSelector:@selector(controlViewFadeOut) withObject:nil afterDelay:2.5];
+        }
     }
 }
 
@@ -279,6 +283,7 @@ static UISlider * _volumeSlider;
     } else {
         [_vodPlayer pause];
         [self.controlView fadeShow];
+        [NSObject cancelPreviousPerformRequestsWithTarget:self selector:@selector(controlViewFadeOut) object:nil];
     }
 }
 
@@ -662,7 +667,7 @@ static UISlider * _volumeSlider;
 - (void)singleTapAction:(UIGestureRecognizer *)gesture {
     if (gesture.state == UIGestureRecognizerStateRecognized) {
         //暂停状态和 结束状态不执行隐藏控制器
-        if (self.playDidEnd || self.state == StatePause) {
+        if (self.playDidEnd) {
             return;
         }
         if (SuperPlayerWindowShared.isShowing)
@@ -671,11 +676,10 @@ static UISlider * _volumeSlider;
         if (self.controlView.hidden) {
             [self.controlView fadeShow];
             if (!self.disableAutoHideControl) {
-                dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(2.5 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-                    if (!self.controlView.isShowSecondView) {
-                        [self.controlView fadeOut:0.35];
-                    }
-                });
+                if (!self.controlView.isShowSecondView && self.state != StatePause) {
+                    [NSObject cancelPreviousPerformRequestsWithTarget:self selector:@selector(controlViewFadeOut) object:nil];
+                    [self performSelector:@selector(controlViewFadeOut) withObject:nil afterDelay:2.5];
+                }
             }
         } else {
             [self.controlView fadeOut:0.2];
@@ -684,6 +688,10 @@ static UISlider * _volumeSlider;
             [self.delegate superPlayerSingleTap:self];
         }
     }
+}
+
+- (void)controlViewFadeOut {
+    [self.controlView fadeOut:0.35];
 }
 
 /**
@@ -861,6 +869,11 @@ static UISlider * _volumeSlider;
         [self.vodPlayer resume];
         [self.vodPlayer seek:dragedSeconds];
         [self.controlView setPlayState:YES];
+        if (!self.disableAutoHideControl) {
+            [NSObject cancelPreviousPerformRequestsWithTarget:self selector:@selector(controlViewFadeOut) object:nil];
+            [self performSelector:@selector(controlViewFadeOut) withObject:nil afterDelay:2.5];
+        }
+  
     }
 }
 
@@ -1420,9 +1433,8 @@ static UISlider * _volumeSlider;
             self.state = StatePlaying;
             //1.开始播放后自动隐藏 2.如果视频自动播放才需要隐藏
             if (!self.disableAutoHideControl && self.autoPlay) {
-                dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(2.5 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-                    [self.controlView fadeOut:0.35];
-                });
+                [NSObject cancelPreviousPerformRequestsWithTarget:self selector:@selector(controlViewFadeOut) object:nil];
+                [self performSelector:@selector(controlViewFadeOut) withObject:nil afterDelay:2.5];
             }
 //            if (self.playerModel.playDefinitions.count == 0) {
                 [self updateBitrates:player.supportedBitrates];
