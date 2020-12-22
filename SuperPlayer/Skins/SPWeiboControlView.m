@@ -129,6 +129,8 @@
         // slider结束滑动事件
         [_videoSlider addTarget:self action:@selector(progressSliderTouchEnded:) forControlEvents:UIControlEventTouchUpInside | UIControlEventTouchUpOutside|UIControlEventTouchCancel];
         _videoSlider.delegate = self;
+        _videoSlider.thumbOffset = 7.5;
+        _videoSlider.hitTestEdgeInsets = UIEdgeInsetsMake(0, -10, 0, -10);
     }
     return _videoSlider;
 }
