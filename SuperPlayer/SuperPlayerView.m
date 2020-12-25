@@ -754,7 +754,7 @@ static UISlider * _volumeSlider;
     [self.netWatcher stopWatch];
     
     self.repeatBtn.hidden = NO;
-    if (_isFullScreen || _isVFullScreen)  {
+    if (_isFullScreen)  {
         self.repeatBackBtn.hidden = NO;
     }
     if ([self.delegate respondsToSelector:@selector(superPlayerDidEnd:)]) {
