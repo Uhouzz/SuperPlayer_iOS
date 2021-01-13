@@ -1475,7 +1475,7 @@ static UISlider * _volumeSlider;
             CGFloat value         = player.currentPlaybackTime / player.duration;
             if (!self.controlView.isDragging && !self.isDragging) {
                 if (self.seekTime > 0) {//快进
-                    if (self.seekTime == self.playCurrentTime) {//只有到快进的时间点才继续更新进度
+                    if (ceilf(self.seekTime) == ceilf(self.playCurrentTime)) {//只有到快进的时间点才继续更新进度
                         [self.controlView setProgressTime:self.playCurrentTime totalTime:totalTime progressValue:value playableValue:player.playableDuration / player.duration];
                         self.seekTime = 0;
                     }
