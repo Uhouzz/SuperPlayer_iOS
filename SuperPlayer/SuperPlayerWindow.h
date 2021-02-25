@@ -37,5 +37,7 @@ typedef void(^SuperPlayerWindowEventHandler)(void);
 
 @property (nonatomic, weak) UIView *customView;
 
-
+/// 延迟显示关闭按钮
+/// @param time 秒
+- (void)setCloseBtnAfterShow:(NSInteger)time;
 @end

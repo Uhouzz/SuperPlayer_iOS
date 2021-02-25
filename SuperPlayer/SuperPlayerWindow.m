@@ -54,6 +54,7 @@
     closeBtn = [UIButton buttonWithType:UIButtonTypeCustom];
     [closeBtn setImage:SuperPlayerImage(@"close") forState:UIControlStateNormal];
     [closeBtn addTarget:self action:@selector(closeBtnClick:) forControlEvents:UIControlEventTouchUpInside];
+    closeBtn.hidden = YES;
     [_rootView addSubview:closeBtn];
     [closeBtn sizeToFit];
     _closeBtn = closeBtn;
@@ -77,7 +78,12 @@
     
     return self;
 }
-
+- (void)setCloseBtnAfterShow:(NSInteger)time{
+    
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(time * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+        _closeBtn.hidden = NO;
+    });
+}
 
 - (void)show {
     _rootView.frame = self.floatViewRect;
@@ -101,7 +107,24 @@
     _closeBtn.mm_width(42).mm_height(42).mm_top(0).mm_right(0);
     
     _isShowing = YES;
+    _rootView.layer.cornerRadius = 8;
+       //给图层添加一个有色边框
+    _rootView.layer.borderWidth = 2;
     
+    _rootView.layer.borderColor = [UIColor colorWithRed:255/255.0 green:90/255.0 blue:95/255.0 alpha:1].CGColor;
+    _rootView.layer.masksToBounds = YES;
+    UIButton *btn = [UIButton buttonWithType:UIButtonTypeCustom];
+    btn.layer.cornerRadius = 12;
+       //给图层添加一个有色边框
+    btn.layer.masksToBounds = YES;
+    btn.backgroundColor = [UIColor colorWithRed:255/255.0 green:90/255.0 blue:95/255.0 alpha:1];
+    [btn setTitle:@"直播中" forState:UIControlStateNormal];
+    [btn setImage:[UIImage imageNamed:@"LiveWindow_tip"] forState:UIControlStateNormal];
+    [btn setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+    btn.titleLabel.font = [UIFont systemFontOfSize:10.0 weight:UIFontWeightSemibold];
+    btn.titleEdgeInsets = UIEdgeInsetsMake(0, 3.5, 0, 0);
+    [_rootView addSubview:btn];
+    btn.mm_width(61).mm_height(24).mm_left(0).mm_bottom(0);
     [DataReport report:@"floatmode" param:nil];
 }
 
