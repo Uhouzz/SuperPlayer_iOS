@@ -45,6 +45,9 @@
     self.rootViewController.view.backgroundColor = [UIColor clearColor];
     self.rootViewController.view.userInteractionEnabled = NO;
     
+    //设置默认显示关闭按钮的延迟
+    self.closeBtnAfterTime = 0;
+    
     _rootView = [[UIView alloc] initWithFrame:CGRectZero];
     _rootView.backgroundColor = [UIColor blackColor];
     
