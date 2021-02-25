@@ -40,4 +40,7 @@ typedef void(^SuperPlayerWindowEventHandler)(void);
 /// 延迟显示关闭按钮
 /// @param time 秒
 - (void)setCloseBtnAfterShow:(NSInteger)time;
+
+/// 设置小窗底部状态title
+- (void)setLiveStatusTitle:(NSString *)title;
 @end

@@ -25,6 +25,7 @@
     UIView *_rootView;
     UIButton    *_closeBtn;
     UIButton    *_backBtn;
+    UIButton    *_statusBtn;
 }
 
 + (instancetype)sharedInstance {
@@ -78,13 +79,15 @@
     
     return self;
 }
-- (void)setCloseBtnAfterShow:(NSInteger)time{
+- (void)setCloseBtnAfterShow:(NSInteger)time {
     
     dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(time * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
         _closeBtn.hidden = NO;
     });
 }
-
+- (void)setLiveStatusTitle:(NSString *)title {
+    [_statusBtn setTitle:title forState:UIControlStateNormal];
+}
 - (void)show {
     _rootView.frame = self.floatViewRect;
     [self addSubview:_rootView];
@@ -113,18 +116,19 @@
     
     _rootView.layer.borderColor = [UIColor colorWithRed:255/255.0 green:90/255.0 blue:95/255.0 alpha:1].CGColor;
     _rootView.layer.masksToBounds = YES;
-    UIButton *btn = [UIButton buttonWithType:UIButtonTypeCustom];
-    btn.layer.cornerRadius = 12;
+    UIButton *statusBtn = [UIButton buttonWithType:UIButtonTypeCustom];
+    statusBtn.layer.cornerRadius = 12;
        //给图层添加一个有色边框
-    btn.layer.masksToBounds = YES;
-    btn.backgroundColor = [UIColor colorWithRed:255/255.0 green:90/255.0 blue:95/255.0 alpha:1];
-    [btn setTitle:@"直播中" forState:UIControlStateNormal];
-    [btn setImage:[UIImage imageNamed:@"LiveWindow_tip"] forState:UIControlStateNormal];
-    [btn setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
-    btn.titleLabel.font = [UIFont systemFontOfSize:10.0 weight:UIFontWeightSemibold];
-    btn.titleEdgeInsets = UIEdgeInsetsMake(0, 3.5, 0, 0);
-    [_rootView addSubview:btn];
-    btn.mm_width(61).mm_height(24).mm_left(0).mm_bottom(0);
+    statusBtn.layer.masksToBounds = YES;
+    statusBtn.backgroundColor = [UIColor colorWithRed:255/255.0 green:90/255.0 blue:95/255.0 alpha:1];
+    [statusBtn setTitle:@"直播中" forState:UIControlStateNormal];
+    [statusBtn setImage:[UIImage imageNamed:@"LiveWindow_tip"] forState:UIControlStateNormal];
+    [statusBtn setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+    statusBtn.titleLabel.font = [UIFont systemFontOfSize:10.0 weight:UIFontWeightSemibold];
+    statusBtn.titleEdgeInsets = UIEdgeInsetsMake(0, 3.5, 0, 0);
+    [_rootView addSubview:statusBtn];
+    statusBtn.mm_width(61).mm_height(24).mm_left(0).mm_bottom(0);
+    _statusBtn = statusBtn;
     [DataReport report:@"floatmode" param:nil];
 }
 
