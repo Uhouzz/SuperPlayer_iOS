@@ -33,14 +33,14 @@ typedef void(^SuperPlayerWindowEventHandler)(void);
 /// 小窗是否显示
 @property (readonly) BOOL isShowing;  //
 
+/// 小窗底部状态按钮title
+@property (nonatomic ,copy) NSString *statusBtntitle;
+
+/// 关闭按钮延迟多少秒显示   默认 0
+@property (nonatomic ,assign) NSInteger closeBtnAfterTime;
+
 @property (nonatomic, assign) CGRect floatViewRect;
 
 @property (nonatomic, weak) UIView *customView;
 
-/// 延迟显示关闭按钮
-/// @param time 秒
-- (void)setCloseBtnAfterShow:(NSInteger)time;
-
-/// 设置小窗底部状态title
-- (void)setLiveStatusTitle:(NSString *)title;
 @end

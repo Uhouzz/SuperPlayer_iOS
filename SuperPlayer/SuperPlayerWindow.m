@@ -85,8 +85,10 @@
         _closeBtn.hidden = NO;
     });
 }
-- (void)setLiveStatusTitle:(NSString *)title {
-    [_statusBtn setTitle:title forState:UIControlStateNormal];
+
+- (void)setStatusBtntitle:(NSString *)statusBtntitle{
+    _statusBtntitle = statusBtntitle;
+    [_statusBtn setTitle:statusBtntitle forState:UIControlStateNormal];
 }
 - (void)show {
     _rootView.frame = self.floatViewRect;
@@ -122,13 +124,14 @@
     statusBtn.layer.masksToBounds = YES;
     statusBtn.backgroundColor = [UIColor colorWithRed:255/255.0 green:90/255.0 blue:95/255.0 alpha:1];
     [statusBtn setTitle:@"直播中" forState:UIControlStateNormal];
-    [statusBtn setImage:[UIImage imageNamed:@"LiveWindow_tip"] forState:UIControlStateNormal];
+    [statusBtn setImage:SuperPlayerImage(@"LiveWindow_tip") forState:UIControlStateNormal];
     [statusBtn setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
     statusBtn.titleLabel.font = [UIFont systemFontOfSize:10.0 weight:UIFontWeightSemibold];
     statusBtn.titleEdgeInsets = UIEdgeInsetsMake(0, 3.5, 0, 0);
     [_rootView addSubview:statusBtn];
     statusBtn.mm_width(61).mm_height(24).mm_left(0).mm_bottom(0);
     _statusBtn = statusBtn;
+    [self setCloseBtnAfterShow:self.closeBtnAfterTime];
     [DataReport report:@"floatmode" param:nil];
 }
 
