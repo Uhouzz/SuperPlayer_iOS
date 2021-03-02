@@ -788,7 +788,7 @@ static UISlider * _volumeSlider;
     if (self.isLive) {
         return;
     }
-    if (!self.isPauseByUser && (self.state != StateStopped && self.state != StateFailed)) {
+    if (!self.isPauseByUser && (self.state != StateStopped && self.state != StateFailed) && self.playCurrentTime != 0) {
         self.state = StatePlaying;
         [_vodPlayer resume];
     }
