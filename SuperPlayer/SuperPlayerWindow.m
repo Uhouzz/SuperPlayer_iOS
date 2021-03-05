@@ -59,6 +59,12 @@
     [closeBtn setImage:SuperPlayerImage(@"close") forState:UIControlStateNormal];
     [closeBtn addTarget:self action:@selector(closeBtnClick:) forControlEvents:UIControlEventTouchUpInside];
     closeBtn.hidden = YES;
+    closeBtn.backgroundColor = [UIColor colorWithRed:0/255.0 green:0/255.0 blue:0/255.0 alpha:0.2];
+    closeBtn.layer.cornerRadius = 10;
+    _rootView.layer.masksToBounds = YES;
+    UIButton *statusBtn = [UIButton buttonWithType:UIButtonTypeCustom];
+    statusBtn.layer.cornerRadius = 12;
+    statusBtn.layer.masksToBounds = YES;
     [_rootView addSubview:closeBtn];
     [closeBtn sizeToFit];
     _closeBtn = closeBtn;
@@ -111,20 +117,17 @@
     if (self.customView) {
         [_rootView bringSubviewToFront:self.customView];
     }
-//    _backBtn.m_top(8).m_left(8);
-    _closeBtn.mm_width(42).mm_height(42).mm_top(0).mm_right(0);
+    _closeBtn.mm_width(20).mm_height(20).mm_top(6).mm_right(6);
     
     _isShowing = YES;
+    
     _rootView.layer.cornerRadius = 8;
        //给图层添加一个有色边框
-    _rootView.layer.borderWidth = 2;
+    _rootView.layer.borderWidth = 1;
     
     _rootView.layer.borderColor = [UIColor colorWithRed:255/255.0 green:90/255.0 blue:95/255.0 alpha:1].CGColor;
     _rootView.layer.masksToBounds = YES;
     UIButton *statusBtn = [UIButton buttonWithType:UIButtonTypeCustom];
-    statusBtn.layer.cornerRadius = 12;
-       //给图层添加一个有色边框
-    statusBtn.layer.masksToBounds = YES;
     statusBtn.backgroundColor = [UIColor colorWithRed:255/255.0 green:90/255.0 blue:95/255.0 alpha:1];
     [statusBtn setTitle:@"直播中" forState:UIControlStateNormal];
     [statusBtn setImage:SuperPlayerImage(@"LiveWindow_tip") forState:UIControlStateNormal];
@@ -133,6 +136,11 @@
     statusBtn.titleEdgeInsets = UIEdgeInsetsMake(0, 3.5, 0, 0);
     [_rootView addSubview:statusBtn];
     statusBtn.mm_width(61).mm_height(24).mm_left(0).mm_bottom(0);
+    UIBezierPath *maskPath= [UIBezierPath bezierPathWithRoundedRect:statusBtn.bounds byRoundingCorners:UIRectCornerTopLeft | UIRectCornerTopRight | UIRectCornerBottomRight cornerRadii:CGSizeMake(8, 8)];
+    CAShapeLayer *maskLayer = [CAShapeLayer layer];
+    maskLayer.frame = statusBtn.bounds;
+    maskLayer.path = maskPath.CGPath;
+    statusBtn.layer.mask = maskLayer;
     _statusBtn = statusBtn;
     [self setCloseBtnAfterShow:self.closeBtnAfterTime];
     [DataReport report:@"floatmode" param:nil];
