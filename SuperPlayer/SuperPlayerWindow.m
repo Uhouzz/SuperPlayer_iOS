@@ -136,7 +136,7 @@
     statusBtn.titleEdgeInsets = UIEdgeInsetsMake(0, 3.5, 0, 0);
     [_rootView addSubview:statusBtn];
     statusBtn.mm_width(61).mm_height(24).mm_left(0).mm_bottom(0);
-    UIBezierPath *maskPath= [UIBezierPath bezierPathWithRoundedRect:statusBtn.bounds byRoundingCorners:UIRectCornerTopLeft | UIRectCornerTopRight | UIRectCornerBottomRight cornerRadii:CGSizeMake(8, 8)];
+    UIBezierPath *maskPath= [UIBezierPath bezierPathWithRoundedRect:statusBtn.bounds byRoundingCorners:UIRectCornerTopLeft | UIRectCornerTopRight | UIRectCornerBottomRight cornerRadii:CGSizeMake(10, 8)];
     CAShapeLayer *maskLayer = [CAShapeLayer layer];
     maskLayer.frame = statusBtn.bounds;
     maskLayer.path = maskPath.CGPath;
