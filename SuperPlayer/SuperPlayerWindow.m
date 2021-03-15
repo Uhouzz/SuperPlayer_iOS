@@ -159,12 +159,10 @@
 }
 
 - (BOOL)pointInside:(CGPoint)point withEvent:(UIEvent *)event {
-    
     if (CGRectContainsPoint(_rootView.bounds,
                             [_rootView convertPoint:point fromView:self])) {
         return [super pointInside:point withEvent:event];
     }
-    
     return NO;
 }
 
