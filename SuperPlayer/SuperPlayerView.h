@@ -86,6 +86,8 @@ typedef NS_ENUM(NSInteger, SuperPlayerLayoutStyle) {
 @property (nonatomic, assign) BOOL hiddenFastView;
 /// 设置封面图片
 @property (nonatomic) UIImageView *coverImageView;
+/// 设置清晰封面图片
+@property (nonatomic) UIImageView *coverCenterImageView;
 /// 重播按钮
 @property (nonatomic, strong) UIButton *repeatBtn;
 /// 全屏退出
@@ -111,6 +113,8 @@ typedef NS_ENUM(NSInteger, SuperPlayerLayoutStyle) {
 /// 播放器背景色
 @property (nonatomic, strong) UIColor *playerBackgroundColor;
 
+/// 播放器加载中视图
+@property (nonatomic ,weak) UIImageView *xxloadImage;
 /**
  * 视频雪碧图
  */
@@ -146,5 +150,4 @@ typedef NS_ENUM(NSInteger, SuperPlayerLayoutStyle) {
  *  @param dragedSeconds 视频跳转的秒数
  */
 - (void)seekToTime:(NSInteger)dragedSeconds;
-
 @end

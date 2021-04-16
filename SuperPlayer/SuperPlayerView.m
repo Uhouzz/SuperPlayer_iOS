@@ -1870,14 +1870,38 @@ static UISlider * _volumeSlider;
     if (!_coverImageView) {
         _coverImageView = [[UIImageView alloc] init];
         _coverImageView.userInteractionEnabled = YES;
-        _coverImageView.contentMode = UIViewContentModeScaleAspectFit;
+        _coverImageView.contentMode = UIViewContentModeScaleAspectFill;
         _coverImageView.alpha = 0;
         [self insertSubview:_coverImageView belowSubview:self.controlView];
         [_coverImageView mas_makeConstraints:^(MASConstraintMaker *make) {
             make.edges.mas_equalTo(UIEdgeInsetsZero);
         }];
+        UIBlurEffect *blurEffect =[UIBlurEffect effectWithStyle:UIBlurEffectStyleLight];
+        UIVisualEffectView *effectView =[[UIVisualEffectView alloc]initWithEffect:blurEffect];
+        [_coverImageView addSubview:effectView];
+        [effectView mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.edges.mas_equalTo(UIEdgeInsetsZero);
+        }];
+        UIImageView *centerImage = [[UIImageView alloc] initWithImage:_coverImageView.image];
+        centerImage.contentMode = UIViewContentModeScaleAspectFit;
+        [_coverImageView addSubview:centerImage];
+        [centerImage mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.edges.mas_equalTo(UIEdgeInsetsZero);
+        }];
+        
     }
     return _coverImageView;
+}
+- (UIImageView *)coverCenterImageView{
+    if (!_coverCenterImageView) {
+        _coverCenterImageView = [[UIImageView alloc] init];
+        _coverCenterImageView.contentMode = UIViewContentModeScaleAspectFit;
+        [self.coverImageView addSubview:_coverCenterImageView];
+        [_coverCenterImageView mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.edges.mas_equalTo(UIEdgeInsetsZero);
+        }];
+    }
+    return _coverCenterImageView;
 }
 
 - (NetWatcher *)netWatcher {
@@ -1889,5 +1913,10 @@ static UISlider * _volumeSlider;
     }
     return _netWatcher;
 }
-
+- (UIImageView *)xxloadImage {
+    if (!_xxloadImage) {
+        _xxloadImage = [[UIImageView alloc] init];
+    }
+    return _xxloadImage;
+}
 @end
