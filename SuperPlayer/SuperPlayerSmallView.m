@@ -46,7 +46,8 @@
     
     UIPanGestureRecognizer *panGesture = [[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(panGestureRecognizer:)];
     [_rootView addGestureRecognizer:panGesture];
-    
+    UITapGestureRecognizer *tapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(backBtnClick:)];
+    [_rootView addGestureRecognizer:tapGesture];
     UIButton *closeBtn = [UIButton buttonWithType:UIButtonTypeCustom];
     closeBtn = [UIButton buttonWithType:UIButtonTypeCustom];
     [closeBtn setImage:SuperPlayerImage(@"close") forState:UIControlStateNormal];
@@ -93,9 +94,9 @@
     _statusBtntitle = statusBtntitle;
     [_statusBtn setTitle:statusBtntitle forState:UIControlStateNormal];
 }
-- (void)show {
+- (void)showWithVC:(UIViewController *)vc {
     _rootView.frame = self.floatViewRect;
-    [self addSubview:_rootView];
+    [vc.view addSubview:_rootView];
     self.hidden = NO;
     
     self.origFatherView = self.superPlayer.fatherView;
@@ -138,9 +139,11 @@
     _statusBtn = statusBtn;
     [self setCloseBtnAfterShow:self.closeBtnAfterTime];
     [DataReport report:@"floatmode" param:nil];
+//    [vc.view addSubview:self];
+    self.baseVC = vc;
 }
 
-- (void)hide {
+- (void)hide{
     self.floatViewRect = _rootView.frame;
     
     [_rootView removeFromSuperview];
@@ -221,8 +224,8 @@
         
         CGFloat   leftMinX = 0.0f + effectiveEdgeInsets.left;
         CGFloat    topMinY = 0.0f + effectiveEdgeInsets.top;
-        CGFloat  rightMaxX = self.bounds.size.width - _rootView.bounds.size.width + effectiveEdgeInsets.right;
-        CGFloat bottomMaxY = self.bounds.size.height - _rootView.bounds.size.height + effectiveEdgeInsets.bottom;
+        CGFloat  rightMaxX = ScreenWidth - _rootView.bounds.size.width + effectiveEdgeInsets.right;
+        CGFloat bottomMaxY = ScreenHeight - _rootView.bounds.size.height + effectiveEdgeInsets.bottom;
         
         CGRect frame = _rootView.frame;
         frame.origin.x = frame.origin.x > rightMaxX ? rightMaxX : frame.origin.x;
@@ -232,7 +235,7 @@
         _rootView.frame = frame;
         
         // zero
-        [panGesture setTranslation:CGPointZero inView:self];
+        [panGesture setTranslation:CGPointZero inView:self.baseVC.view];
     }
     else if (UIGestureRecognizerStateEnded == panGesture.state) {
 

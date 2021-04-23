@@ -15,9 +15,9 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface SuperPlayerSmallView : UIView
 
-
+@property (nonatomic ,strong)UIViewController *baseVC;
 /// 显示小窗
-- (void)show;
+- (void)showWithVC:(UIViewController *)vc;
 /// 隐藏小窗
 - (void)hide;
 /// 单例
