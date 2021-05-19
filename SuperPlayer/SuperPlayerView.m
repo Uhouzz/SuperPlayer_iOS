@@ -1876,19 +1876,6 @@ static UISlider * _volumeSlider;
         [_coverImageView mas_makeConstraints:^(MASConstraintMaker *make) {
             make.edges.mas_equalTo(UIEdgeInsetsZero);
         }];
-        UIBlurEffect *blurEffect =[UIBlurEffect effectWithStyle:UIBlurEffectStyleLight];
-        UIVisualEffectView *effectView =[[UIVisualEffectView alloc]initWithEffect:blurEffect];
-        [_coverImageView addSubview:effectView];
-        [effectView mas_makeConstraints:^(MASConstraintMaker *make) {
-            make.edges.mas_equalTo(UIEdgeInsetsZero);
-        }];
-        UIImageView *centerImage = [[UIImageView alloc] initWithImage:_coverImageView.image];
-        centerImage.contentMode = UIViewContentModeScaleAspectFit;
-        [_coverImageView addSubview:centerImage];
-        [centerImage mas_makeConstraints:^(MASConstraintMaker *make) {
-            make.edges.mas_equalTo(UIEdgeInsetsZero);
-        }];
-        
     }
     return _coverImageView;
 }

@@ -17,6 +17,8 @@
 @interface SuperPlayerSmallView ()<TXVodPlayListener>
 @property (weak) UIView *origFatherView;
 @property (nonatomic, assign) BOOL hiddenfastView;
+@property (nonatomic ,strong) UIVisualEffectView *effectView;
+@property (nonatomic ,strong) UIImageView *centerImage;
 @end
 @implementation SuperPlayerSmallView {
     UIView *_rootView;
@@ -139,6 +141,15 @@
     _statusBtn = statusBtn;
     [self setCloseBtnAfterShow:self.closeBtnAfterTime];
     [DataReport report:@"floatmode" param:nil];
+    [self.superPlayer.coverImageView addSubview:self.effectView];
+    [self.effectView mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.edges.mas_equalTo(UIEdgeInsetsZero);
+    }];
+    
+    [self.superPlayer.coverImageView addSubview:self.centerImage];
+    [self.centerImage mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.edges.mas_equalTo(UIEdgeInsetsZero);
+    }];
 //    [vc.view addSubview:self];
     self.baseVC = vc;
 }
@@ -263,6 +274,21 @@
 -(void) onNetStatus:(TXVodPlayer *)player withParam:(NSDictionary*)param
 {
     
+}
+- (UIVisualEffectView *)effectView {
+    if (!_effectView) {
+        UIBlurEffect *blurEffect =[UIBlurEffect effectWithStyle:UIBlurEffectStyleLight];
+        _effectView =[[UIVisualEffectView alloc]initWithEffect:blurEffect];
+        
+    }
+    return _effectView;
+}
+- (UIImageView *)centerImage {
+    if (!_centerImage) {
+        _centerImage = [[UIImageView alloc] initWithImage:self.superPlayer.coverImageView.image];
+        _centerImage.contentMode = UIViewContentModeScaleAspectFit;
+    }
+    return _centerImage;
 }
 /*
 // Only override drawRect: if you perform custom drawing.

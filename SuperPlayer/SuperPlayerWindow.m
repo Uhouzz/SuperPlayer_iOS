@@ -145,6 +145,7 @@
     _statusBtn = statusBtn;
     [self setCloseBtnAfterShow:self.closeBtnAfterTime];
     [DataReport report:@"floatmode" param:nil];
+    
 }
 
 - (void)hide {
