@@ -1426,7 +1426,6 @@ static UISlider * _volumeSlider;
         if (EvtID == PLAY_EVT_PLAY_BEGIN || EvtID == PLAY_EVT_RCV_FIRST_I_FRAME) {
             [self setNeedsLayout];
             [self layoutIfNeeded];
-            self.isLoaded = YES;
             [self _removeOldPlayer];
             [self.vodPlayer setupVideoWidget:self insertIndex:0];
             [self layoutSubviews];  // 防止横屏状态下添加view显示不全
@@ -1458,6 +1457,7 @@ static UISlider * _volumeSlider;
             }
         }
         if (EvtID == PLAY_EVT_VOD_PLAY_PREPARED) {
+            self.isLoaded = YES;
             // 防止暂停导致加载进度不消失
             if (self.isPauseByUser)
                 [self.spinner stopAnimating];
