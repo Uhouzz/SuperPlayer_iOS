@@ -48,7 +48,7 @@ Pod::Spec.new do |spec|
     end
     spec.subspec "Smart" do |s|
         s.dependency 'SuperPlayer/Core'
-        s.dependency 'TXLiteAVSDK_Smart'
+        s.dependency 'TXLiteAVSDK_Smart','= 9.5.11230'
 #        s.vendored_framework = "Frameworks/TXLiteAVSDK_Smart.framework"
     end
     spec.subspec "UGC" do |s|
