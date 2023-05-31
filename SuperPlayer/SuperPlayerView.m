@@ -1531,13 +1531,19 @@ static UISlider * _volumeSlider;
 }
 
 -(void) onNetStatus:(TXVodPlayer *)player withParam:(NSDictionary*)param {
-    if (!self.autoAdjustRenderMode) {
-        return;
-    }
     
     CGFloat videoWidth = [[param objectForKey:NET_STATUS_VIDEO_WIDTH] floatValue];
     CGFloat videoHeight = [[param objectForKey:NET_STATUS_VIDEO_HEIGHT] floatValue];
+    
     if (videoWidth == 0 || videoHeight == 0) {
+        return;
+    }
+    
+    if (videoHeight / videoWidth > 1){
+        self.isVFullScreen = YES;
+    }
+    
+    if (!self.autoAdjustRenderMode) {
         return;
     }
     [self.spinner stopAnimating];
