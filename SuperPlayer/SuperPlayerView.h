@@ -150,4 +150,12 @@ typedef NS_ENUM(NSInteger, SuperPlayerLayoutStyle) {
  *  @param dragedSeconds 视频跳转的秒数
  */
 - (void)seekToTime:(NSInteger)dragedSeconds;
+
+/**
+ *  增加字幕控件
+ *
+ *  @param tagView 字幕控件位置的参照view
+ */
+- (void)addSubtitleViewWithTagView:(UIView *)tagView;
+
 @end

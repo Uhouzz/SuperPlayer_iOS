@@ -14,6 +14,11 @@ const NSString *kPlayVideoHost3 = @"playvideo.qcloud.com";
 NSNotificationName kSuperPlayerModelReady = @"kSuperPlayerModelReady";
 NSNotificationName kSuperPlayerModelFail = @"kSuperPlayerModelFail";
 
+@implementation SuperPlayerSubtitle
+
+
+
+@end
 @interface AdaptiveStream : NSObject
 @property NSString *url;
 @property NSString *drmType;
@@ -39,7 +44,12 @@ NSNotificationName kSuperPlayerModelFail = @"kSuperPlayerModelFail";
     }
     return self;
 }
-
+- (NSMutableArray<SuperPlayerSubtitle *> *)subtitles {
+    if(!_subtitles){
+        _subtitles = [NSMutableArray array];
+    }
+    return _subtitles;
+}
 - (void)dealloc {
     
 }

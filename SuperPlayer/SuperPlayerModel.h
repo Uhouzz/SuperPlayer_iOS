@@ -1,12 +1,20 @@
 #import <Foundation/Foundation.h>
 #import <UIKit/UIKit.h>
-
+#import <AVFoundation/AVFoundation.h>
 
 @class SuperPlayerView;
 
 extern NSNotificationName kSuperPlayerModelReady;
 extern NSNotificationName kSuperPlayerModelFail;
 
+
+@interface SuperPlayerSubtitle : NSObject
+
+@property (nonatomic ,copy)NSString *text;
+@property (nonatomic, strong)NSDate *startTime;
+@property (nonatomic, strong)NSDate *endTime;
+
+@end
 /** 多码率地址 */
 @interface SuperPlayerUrl : NSObject
 @property NSString *title;
@@ -140,7 +148,7 @@ extern NSNotificationName kSuperPlayerModelFail;
 @property (nonatomic) NSString *playingDefinition;
 
 
-
+@property (nonatomic ,strong)NSMutableArray<SuperPlayerSubtitle *>* subtitles;
 
 /**
  * 正在播放的清晰度URL

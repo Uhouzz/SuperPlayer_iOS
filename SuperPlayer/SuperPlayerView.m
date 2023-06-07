@@ -12,7 +12,7 @@
 #import "TXBitrateItemHelper.h"
 #import "UIView+MMLayout.h"
 #import "SPDefaultControlView.h"
-
+#import "SuperPlayerSubtitlesView.h"
 static UISlider * _volumeSlider;
 
 #define CellPlayerFatherViewTag  200
@@ -23,7 +23,14 @@ static UISlider * _volumeSlider;
 
 
 
+@interface SuperPlayerView ()
 
+@property (nonatomic ,strong) SuperPlayerSubtitlesView *subtitlesView;
+@property (nonatomic ,strong) UIView *tagView;
+@property (nonatomic ,strong) NSMutableArray *subtitlesArray;
+
+
+@end
 @implementation SuperPlayerView {
     UIView *_fullScreenBlackView;
     SuperPlayerControlView *_controlView;
@@ -83,8 +90,20 @@ static UISlider * _volumeSlider;
     [self createGesture];
     
     self.autoPlay = YES;
+    
+    
 }
 
+- (void)addSubtitleViewWithTagView:(UIView *)tagView {
+    self.subtitlesView = [[SuperPlayerSubtitlesView alloc] init];
+    [self addSubview:self.subtitlesView];
+    self.tagView = tagView;
+    [self.subtitlesView mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.bottom.mas_equalTo(self.tagView.mas_top).offset(-10);
+        make.centerX.mas_equalTo(self);
+        make.width.mas_lessThanOrEqualTo(300);
+    }];
+}
 - (void)dealloc {
     LOG_ME;
     // 移除通知
@@ -147,6 +166,9 @@ static UISlider * _volumeSlider;
     self.coverImageView.alpha = 1;
     self.repeatBtn.hidden = YES;
     self.repeatBackBtn.hidden = YES;
+    [self getSubtitlesUrl:[NSURL URLWithString:@"https://mediacloud-76607.gzc.vod.tencent-cloud.com/DemoResource/TED-EN.vtt"]];
+    
+    
 }
 
 - (void)reloadModel {
@@ -675,14 +697,29 @@ static UISlider * _volumeSlider;
         
         if (self.controlView.hidden) {
             [self.controlView fadeShow];
+            [self.subtitlesView mas_remakeConstraints:^(MASConstraintMaker *make) {
+                make.bottom.mas_equalTo(self.tagView.mas_top).offset(-10);
+                make.centerX.mas_equalTo(self);
+                make.width.mas_lessThanOrEqualTo(300);
+            }];
             if (!self.disableAutoHideControl) {
                 if (!self.controlView.isShowSecondView && self.state != StatePause) {
                     [NSObject cancelPreviousPerformRequestsWithTarget:self selector:@selector(controlViewFadeOut) object:nil];
                     [self performSelector:@selector(controlViewFadeOut) withObject:nil afterDelay:2.5];
                 }
             }
+            
         } else {
+            
             [self.controlView fadeOut:0.2];
+            dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.2 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+                [self.subtitlesView mas_remakeConstraints:^(MASConstraintMaker *make) {
+                    make.bottom.mas_equalTo(self).offset(-100);
+                    make.centerX.mas_equalTo(self);
+                    make.width.mas_lessThanOrEqualTo(300);
+                }];
+            });
+            
         }
         if ([self.delegate respondsToSelector:@selector(superPlayerSingleTap:)]) {
             [self.delegate superPlayerSingleTap:self];
@@ -1071,6 +1108,7 @@ static UISlider * _volumeSlider;
     } else {
         CGFloat value = draggedTime / self.vodPlayer.duration;
         [self.controlView setProgressTime:draggedTime totalTime:self.vodPlayer.duration progressValue:value playableValue:self.vodPlayer.playableDuration / self.vodPlayer.duration];
+        [self updateSubtitleForTime:draggedTime];
     }
     
     UIImage *thumbnail;
@@ -1481,6 +1519,7 @@ static UISlider * _volumeSlider;
                     }
                 } else { //自动更新进度
                     [self.controlView setProgressTime:self.playCurrentTime totalTime:totalTime progressValue:value playableValue:player.playableDuration / player.duration];
+                    [self updateSubtitleForTime:self.playCurrentTime];
                 }
             }
         } else if (EvtID == PLAY_EVT_PLAY_END) {
@@ -1822,7 +1861,99 @@ static UISlider * _volumeSlider;
     }
     [btn fadeOut:0.2];
 }
+#pragma mark - 加载字幕相关
+- (void)getSubtitlesUrl:(NSURL *)subtitleUrl {
+    NSURLRequest *request = [NSURLRequest requestWithURL:subtitleUrl];
+    NSURLSession *session = [NSURLSession sharedSession];
+    NSURLSessionTask *dataTask = [session dataTaskWithRequest:request completionHandler:^(NSData * _Nullable data, NSURLResponse * _Nullable response, NSError * _Nullable error) {
+        if(!error){
+            self.subtitlesArray = [NSMutableArray array];
+            // 解码
+            
+            NSString *subtitlesContent = [[NSString alloc] initWithData:data encoding:kCFStringEncodingUTF8];
 
+            NSArray *subtitleLines = [subtitlesContent componentsSeparatedByCharactersInSet:[NSCharacterSet newlineCharacterSet]];
+            NSMutableArray *subtitles = [NSMutableArray array];
+            SuperPlayerSubtitle *subtitle = [SuperPlayerSubtitle new];
+            for (NSString *line in subtitleLines) {
+                if ([line isEqualToString:@""]) {
+                    continue; // 跳过空行
+                }
+                
+                if ([line rangeOfString:@"-->"].location != NSNotFound) {
+                    // 处理时间行
+                    NSArray *timeComponents = [line componentsSeparatedByString:@" --> "];
+                    NSString *startTimeString = timeComponents[0];
+                    NSString *endTimeString = timeComponents[1];
+                    
+                    subtitle = [[SuperPlayerSubtitle alloc] init];
+                    subtitle.startTime = [self timeFromDate:startTimeString];
+                    subtitle.endTime = [self timeFromDate:endTimeString];
+                } else if (subtitle) {
+                    // 处理字幕文本行
+                    subtitle.text = line;
+                    [subtitles addObject:subtitle];
+                    subtitle = nil;
+                }
+            }
+            self.subtitlesArray = subtitles;
+            
+
+        }
+    }];
+    [dataTask resume];
+
+}
+- (NSDate *)timeFromDate:(NSString *)timeString {
+    NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
+    [formatter setDateFormat:@"HH:mm:ss.SSS"];
+
+    NSDate *date = [formatter dateFromString:timeString];
+    return date;
+}
+- (void)updateSubtitleForTime:(NSInteger)currentTime {
+    NSDate *date = [self buildCurrentTime:currentTime];
+    [self updateSubtitleForTime:date subtitles:self.subtitlesArray];
+}
+- (NSDate *)buildCurrentTime:(NSInteger)currentTime{
+    NSDateFormatter *inputFormatter = [[NSDateFormatter alloc] init];
+
+    NSInteger durHour = currentTime / 3600;
+    if(durHour > 0) {
+        [inputFormatter setDateFormat:@"HH:mm:ss"];
+    }else{
+        [inputFormatter setDateFormat:@"mm:ss"];
+    }
+    NSString *timeString = [StrUtils timeFormat:currentTime];
+    // 创建日期格式化器
+
+    NSDate *date = [inputFormatter dateFromString:timeString];
+
+    // 创建输出格式化器
+    NSDateFormatter *outputFormatter = [[NSDateFormatter alloc] init];
+    [outputFormatter setDateFormat:@"HH:mm:ss.SSS"];
+
+    NSString *formattedTimeString = [outputFormatter stringFromDate:date];
+
+    NSDate *currentDate = [outputFormatter dateFromString:formattedTimeString];
+    return currentDate;
+}
+- (void)updateSubtitleForTime:(NSDate *)date subtitles:(NSArray *)subtitles {
+    for (SuperPlayerSubtitle *subtitle in subtitles) {
+        if([self isTime:date withinStartTime:subtitle.startTime andEndTime:subtitle.endTime]){
+            [self.subtitlesView setDataWithSubtitles:subtitle.text];
+        }
+    }
+}
+- (BOOL)isTime:(NSDate *)time withinStartTime:(NSDate *)startTime andEndTime:(NSDate *)endTime {
+    if ([time compare:startTime] == NSOrderedAscending){
+        return NO;
+    }
+    if([time compare:endTime] == NSOrderedDescending){
+        return NO;
+    }
+    return YES;
+}
 - (UIButton *)repeatBtn {
     if (!_repeatBtn) {
         _repeatBtn = [UIButton buttonWithType:UIButtonTypeCustom];
