@@ -115,6 +115,10 @@ typedef NS_ENUM(NSInteger, SuperPlayerLayoutStyle) {
 
 /// 播放器加载中视图
 @property (nonatomic ,weak) UIImageView *xxloadImage;
+
+/// 字幕数据源
+@property (nonatomic ,strong) NSMutableArray *subtitlesArray;
+
 /**
  * 视频雪碧图
  */
@@ -158,4 +162,7 @@ typedef NS_ENUM(NSInteger, SuperPlayerLayoutStyle) {
  */
 - (void)addSubtitleViewWithTagView:(UIView *)tagView;
 
+- (void)changeSubtitlesData:(NSMutableArray *)subtitles;
+
+@property (nonatomic ,assign)BOOL isHideSubtitles;
 @end
