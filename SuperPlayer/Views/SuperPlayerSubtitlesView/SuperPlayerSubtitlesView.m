@@ -41,7 +41,6 @@
         _subtitle.textColor = [UIColor whiteColor];
         _subtitle.numberOfLines = 0;
         _subtitle.textAlignment = NSTextAlignmentCenter;
-        _subtitle.text = @"这是字幕";
     }
     return _subtitle;
 }
