@@ -694,13 +694,7 @@ static UISlider * _volumeSlider;
         
         if (self.controlView.hidden) {
             [self.controlView fadeShow];
-            dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.2 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-                [self.subtitlesView mas_remakeConstraints:^(MASConstraintMaker *make) {
-                    make.bottom.mas_equalTo(self.tagView.mas_top).offset(-10);
-                    make.centerX.mas_equalTo(self);
-                    make.width.mas_lessThanOrEqualTo(300);
-                }];
-            });
+            [self updateSubtitleViewPoint:YES];
             if (!self.disableAutoHideControl) {
                 if (!self.controlView.isShowSecondView && self.state != StatePause) {
                     [NSObject cancelPreviousPerformRequestsWithTarget:self selector:@selector(controlViewFadeOut) object:nil];
@@ -709,32 +703,35 @@ static UISlider * _volumeSlider;
             }
             
         } else {
-            
             [self.controlView fadeOut:0.2];
-            dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.2 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-                [self.subtitlesView mas_remakeConstraints:^(MASConstraintMaker *make) {
-                    make.bottom.mas_equalTo(self).offset(-100);
-                    make.centerX.mas_equalTo(self);
-                    make.width.mas_lessThanOrEqualTo(300);
-                }];
-            });
-            
+            [self updateSubtitleViewPoint:NO];
         }
         if ([self.delegate respondsToSelector:@selector(superPlayerSingleTap:)]) {
             [self.delegate superPlayerSingleTap:self];
         }
     }
 }
-
+- (void)updateSubtitleViewPoint:(BOOL)isHiden{
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.2 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+        if(isHiden){
+            [self.subtitlesView mas_remakeConstraints:^(MASConstraintMaker *make) {
+                make.bottom.mas_equalTo(self.tagView.mas_top).offset(-10);
+                make.centerX.mas_equalTo(self);
+                make.width.mas_lessThanOrEqualTo(300);
+            }];
+        }else{
+            [self.subtitlesView mas_remakeConstraints:^(MASConstraintMaker *make) {
+                make.bottom.mas_equalTo(self).offset(-100);
+                make.centerX.mas_equalTo(self);
+                make.width.mas_lessThanOrEqualTo(300);
+            }];
+        }
+    });
+}
 - (void)controlViewFadeOut {
     [self.controlView fadeOut:0.35];
-    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.2 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-        [self.subtitlesView mas_remakeConstraints:^(MASConstraintMaker *make) {
-            make.bottom.mas_equalTo(self).offset(-100);
-            make.centerX.mas_equalTo(self);
-            make.width.mas_lessThanOrEqualTo(300);
-        }];
-    });
+    [self updateSubtitleViewPoint:NO];
+
     
 }
 
@@ -986,13 +983,8 @@ static UISlider * _volumeSlider;
             }
             self.isDragging = YES;
             [self.controlView fadeOut:0.2];
-            dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.2 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-                [self.subtitlesView mas_remakeConstraints:^(MASConstraintMaker *make) {
-                    make.bottom.mas_equalTo(self).offset(-100);
-                    make.centerX.mas_equalTo(self);
-                    make.width.mas_lessThanOrEqualTo(300);
-                }];
-            });
+            [self updateSubtitleViewPoint:NO];
+
             break;
         }
         case UIGestureRecognizerStateChanged:{ // 正在移动
