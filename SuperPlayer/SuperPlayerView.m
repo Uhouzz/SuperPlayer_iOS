@@ -694,11 +694,13 @@ static UISlider * _volumeSlider;
         
         if (self.controlView.hidden) {
             [self.controlView fadeShow];
-            [self.subtitlesView mas_remakeConstraints:^(MASConstraintMaker *make) {
-                make.bottom.mas_equalTo(self.tagView.mas_top).offset(-10);
-                make.centerX.mas_equalTo(self);
-                make.width.mas_lessThanOrEqualTo(300);
-            }];
+            dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.2 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+                [self.subtitlesView mas_remakeConstraints:^(MASConstraintMaker *make) {
+                    make.bottom.mas_equalTo(self.tagView.mas_top).offset(-10);
+                    make.centerX.mas_equalTo(self);
+                    make.width.mas_lessThanOrEqualTo(300);
+                }];
+            });
             if (!self.disableAutoHideControl) {
                 if (!self.controlView.isShowSecondView && self.state != StatePause) {
                     [NSObject cancelPreviousPerformRequestsWithTarget:self selector:@selector(controlViewFadeOut) object:nil];
@@ -726,6 +728,14 @@ static UISlider * _volumeSlider;
 
 - (void)controlViewFadeOut {
     [self.controlView fadeOut:0.35];
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.2 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+        [self.subtitlesView mas_remakeConstraints:^(MASConstraintMaker *make) {
+            make.bottom.mas_equalTo(self).offset(-100);
+            make.centerX.mas_equalTo(self);
+            make.width.mas_lessThanOrEqualTo(300);
+        }];
+    });
+    
 }
 
 /**
@@ -976,6 +986,13 @@ static UISlider * _volumeSlider;
             }
             self.isDragging = YES;
             [self.controlView fadeOut:0.2];
+            dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.2 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+                [self.subtitlesView mas_remakeConstraints:^(MASConstraintMaker *make) {
+                    make.bottom.mas_equalTo(self).offset(-100);
+                    make.centerX.mas_equalTo(self);
+                    make.width.mas_lessThanOrEqualTo(300);
+                }];
+            });
             break;
         }
         case UIGestureRecognizerStateChanged:{ // 正在移动
