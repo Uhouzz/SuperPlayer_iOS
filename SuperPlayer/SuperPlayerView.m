@@ -744,6 +744,7 @@ static UISlider * _volumeSlider;
     if (self.playDidEnd) { return;  }
     // 显示控制层
     [self.controlView fadeShow];
+    [self updateSubtitleViewPoint:YES];
     if (self.isPauseByUser) {
         [self resume];
     } else {
@@ -1916,13 +1917,9 @@ static UISlider * _volumeSlider;
     }
 }
 - (BOOL)isTime:(NSDate *)time withinStartTime:(NSDate *)startTime andEndTime:(NSDate *)endTime {
-    if ([time compare:startTime] == NSOrderedAscending){
-        return NO;
+    if ([time compare:startTime] == NSOrderedDescending && [time compare:endTime] == NSOrderedAscending){
+        return YES;
     }
-    if([time compare:endTime] == NSOrderedDescending){
-        return NO;
-    }
-    return YES;
 }
 - (void)setIsHideSubtitles:(BOOL)isHideSubtitles {
     _isHideSubtitles = isHideSubtitles;
