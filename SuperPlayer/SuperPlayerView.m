@@ -1889,7 +1889,8 @@ static UISlider * _volumeSlider;
         }
     }
     if (!subtitleFound) {
-            // 如果没有找到匹配的字幕，则执行相应的处理逻辑（例如清除字幕）
+        //如果没有找到匹配的字幕，则执行相应的处理逻辑（例如清除字幕）
+        [self.subtitlesView setDataWithSubtitles:@""];
     }
 }
 - (BOOL)isTime:(CMTime)time withinStartTime:(CMTime)startTime andEndTime:(CMTime)endTime {

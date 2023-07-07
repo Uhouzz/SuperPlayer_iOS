@@ -46,7 +46,7 @@
     return _subtitle;
 }
 - (void)setDataWithSubtitles:(NSString *)subtitles {
-    if([subtitles isEqualToString:@"WEBVTT"]){
+    if([subtitles isEqualToString:@"WEBVTT"] || subtitles.length == 0){
         self.hidden = YES;
         self.subtitle.text = @"";
     }else{
