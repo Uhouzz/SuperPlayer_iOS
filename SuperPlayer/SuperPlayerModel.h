@@ -11,8 +11,8 @@ extern NSNotificationName kSuperPlayerModelFail;
 @interface SuperPlayerSubtitle : NSObject
 
 @property (nonatomic ,copy)NSString *text;
-@property (nonatomic, strong)NSDate *startTime;
-@property (nonatomic, strong)NSDate *endTime;
+@property (nonatomic, assign)CMTime startTime;
+@property (nonatomic, assign)CMTime endTime;
 
 @end
 /** 多码率地址 */

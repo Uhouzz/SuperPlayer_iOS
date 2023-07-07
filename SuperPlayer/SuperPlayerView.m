@@ -1872,53 +1872,34 @@ static UISlider * _volumeSlider;
     [btn fadeOut:0.2];
 }
 
-- (void)changeSubtitleWithLocal:(NSString *)local{
-    for (NSInteger i = 0; i<self.subtitlesArray.count; i++) {
-        NSDictionary *dic = self.subtitlesArray[i];
-        if([dic[@"local"] isEqualToString:@"en-us"]){
-            
-        }
-    }
-}
 - (void)updateSubtitleForTime:(NSInteger)currentTime {
     if(!self.isHideSubtitles){
-        NSDate *date = [self buildCurrentTime:currentTime];
-        [self updateSubtitleForTime:date subtitles:self.subtitlesArray];
+        int64_t int64Value = (int64_t)currentTime;
+        CMTime currentTime = CMTimeMake(int64Value, 1);
+        [self updateSubtitleForTime:currentTime subtitles:self.subtitlesArray];
     }
 }
-- (NSDate *)buildCurrentTime:(NSInteger)currentTime{
-    NSDateFormatter *inputFormatter = [[NSDateFormatter alloc] init];
-
-    NSInteger durHour = currentTime / 3600;
-    if(durHour > 0) {
-        [inputFormatter setDateFormat:@"HH:mm:ss"];
-    }else{
-        [inputFormatter setDateFormat:@"mm:ss"];
-    }
-    NSString *timeString = [StrUtils timeFormat:currentTime];
-    // 创建日期格式化器
-
-    NSDate *date = [inputFormatter dateFromString:timeString];
-
-    // 创建输出格式化器
-    NSDateFormatter *outputFormatter = [[NSDateFormatter alloc] init];
-    [outputFormatter setDateFormat:@"HH:mm:ss.SSS"];
-
-    NSString *formattedTimeString = [outputFormatter stringFromDate:date];
-
-    NSDate *currentDate = [outputFormatter dateFromString:formattedTimeString];
-    return currentDate;
-}
-- (void)updateSubtitleForTime:(NSDate *)date subtitles:(NSArray *)subtitles {
+- (void)updateSubtitleForTime:(CMTime)date subtitles:(NSArray *)subtitles {
+    BOOL subtitleFound = NO; // 用于记录是否找到匹配的字幕
     for (SuperPlayerSubtitle *subtitle in subtitles) {
         if([self isTime:date withinStartTime:subtitle.startTime andEndTime:subtitle.endTime]){
             [self.subtitlesView setDataWithSubtitles:subtitle.text];
+            subtitleFound = YES; // 设置标志位，表示找到了匹配的字幕
+            break; // 跳出循环，不再继续迭代剩余的字幕
         }
     }
+    if (!subtitleFound) {
+            // 如果没有找到匹配的字幕，则执行相应的处理逻辑（例如清除字幕）
+    }
 }
-- (BOOL)isTime:(NSDate *)time withinStartTime:(NSDate *)startTime andEndTime:(NSDate *)endTime {
-    if ([time compare:startTime] == NSOrderedDescending && [time compare:endTime] == NSOrderedAscending){
+- (BOOL)isTime:(CMTime)time withinStartTime:(CMTime)startTime andEndTime:(CMTime)endTime {
+    CFComparisonResult startResult = CMTimeCompare(time, startTime);
+    CFComparisonResult endResult = CMTimeCompare(time, endTime);
+    
+    if((startResult == kCFCompareEqualTo || startResult == kCFCompareGreaterThan) && (endResult == kCFCompareEqualTo || endResult == kCFCompareLessThan)){
         return YES;
+    }else{
+        return NO;
     }
 }
 - (void)setIsHideSubtitles:(BOOL)isHideSubtitles {
