@@ -1405,6 +1405,7 @@ static UISlider * _volumeSlider;
         make.edges.mas_equalTo(UIEdgeInsetsZero);
     }];
     [controlView playerBegin:self.playerModel isLive:self.isLive isTimeShifting:self.isShiftPlayback isAutoPlay:self.autoPlay];
+    [self resetControlViewWithLive:self.isLive shiftPlayback:self.isShiftPlayback isPlaying:self.state == StatePlaying ? YES : NO]; 
     [controlView setTitle:_controlView.title];
     [controlView setPointArray:_controlView.pointArray];
     
@@ -2082,7 +2083,7 @@ static UISlider * _volumeSlider;
             break;
         case ActionSwitch:
             [self controlViewSwitch:self.controlView withDefinition:self.netWatcher.adviseDefinition];
-            [self.controlView playerBegin:self.playerModel isLive:self.isLive isTimeShifting:self.isShiftPlayback isAutoPlay:YES];
+            [self resetControlViewWithLive:self.isLive shiftPlayback:self.isShiftPlayback isPlaying:YES];
             break;
         case ActionIgnore:
             return;
