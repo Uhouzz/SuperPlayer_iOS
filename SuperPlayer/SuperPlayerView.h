@@ -32,9 +32,11 @@
 typedef NS_ENUM(NSInteger, SuperPlayerState) {
     StateFailed,     // 播放失败
     StateBuffering,  // 缓冲中
+    StatePrepare,    // 准备就绪
     StatePlaying,    // 播放中
     StateStopped,    // 停止播放
     StatePause,      // 暂停播放
+    StateFirstFrame, // 第一帧画面
 };
 
 

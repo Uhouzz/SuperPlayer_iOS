@@ -8,6 +8,14 @@ extern NSNotificationName kSuperPlayerModelReady;
 extern NSNotificationName kSuperPlayerModelFail;
 
 
+// 播放模式
+typedef NS_ENUM(NSInteger, SuperPlayerAction) {
+    PLAY_ACTION_AUTO_PLAY = 0,     //自动播放
+    PLAY_ACTION_MANUAL_PLAY,   //手动播放
+    PLAY_ACTION_PRELOAD        //预加载
+};
+
+
 @interface SuperPlayerSubtitle : NSObject
 
 @property (nonatomic ,copy)NSString *text;
@@ -65,6 +73,12 @@ extern NSNotificationName kSuperPlayerModelFail;
  */
 @property NSString *sign;
 
+/**
+ * 防盗链签名
+ * (使用 fileId 播放时填写)
+ */
+@property(nonatomic, strong) NSString *psign;
+
 ///**
 // * 模板ID (V3)
 // */
@@ -105,6 +119,8 @@ extern NSNotificationName kSuperPlayerModelFail;
 
 @interface SuperPlayerModel : NSObject
 
+/// AppId 用于腾讯云点播 File ID 播放及腾讯云直播时移功能
+@property(nonatomic, assign) long appId;
 
 // ------------------------------------------------------------------
 // URL 播放方式
@@ -163,6 +179,11 @@ extern NSNotificationName kSuperPlayerModelFail;
  */
 @property (readonly) NSArray *playDefinitions;
 
+/// 播放模式
+@property (nonatomic, assign) SuperPlayerAction action;
+
+/// 视频时长
+@property (nonatomic, assign) NSTimeInterval duration;
 
 
 - (void)requestPlayInfo:(SuperPlayerView *)playerView;
