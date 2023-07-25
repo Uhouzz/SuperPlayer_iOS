@@ -1101,7 +1101,6 @@ static UISlider * _volumeSlider;
     } else {
         CGFloat value = draggedTime / self.vodPlayer.duration;
         [self.controlView setProgressTime:draggedTime totalTime:self.vodPlayer.duration progressValue:value playableValue:self.vodPlayer.playableDuration / self.vodPlayer.duration];
-        [self updateSubtitleForTime:draggedTime];
     }
     
     UIImage *thumbnail;
