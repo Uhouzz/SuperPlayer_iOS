@@ -359,9 +359,6 @@ static UISlider * _volumeSlider;
         [self.livePlayer startLivePlay:videoURL type:liveType];
         // 时移
         [TXLiveBase setAppID:[NSString stringWithFormat:@"%ld", _playerModel.videoId.appId]];
-        TXCUrl *curl = [[TXCUrl alloc] initWithString:videoURL];
-        [self.livePlayer prepareLiveSeek:self.playerConfig.playShiftDomain bizId:[curl bizid]];
-        
         [self.livePlayer setMute:self.playerConfig.mute];
         [self.livePlayer setRenderMode:self.playerConfig.renderMode];
     } else {
@@ -895,18 +892,6 @@ static UISlider * _volumeSlider;
     
     if (self.isLive) {
         [DataReport report:@"timeshift" param:nil];
-        int ret = [self.livePlayer seek:dragedSeconds];
-        if (ret != 0) {
-            [self showMiddleBtnMsg:kStrTimeShiftFailed withAction:ActionNone];
-            [self.middleBlackBtn fadeOut:2];
-            [self.controlView playerBegin:self.playerModel isLive:self.isLive isTimeShifting:self.isShiftPlayback isAutoPlay:YES];
-        } else {
-            if (!self.isShiftPlayback)
-                self.isLoaded = NO;
-            self.isShiftPlayback = YES;
-            self.state = StateBuffering;
-            [self.controlView playerBegin:self.playerModel isLive:YES isTimeShifting:self.isShiftPlayback isAutoPlay:YES];    //时移播放不能切码率
-        }
     } else {
         [self.vodPlayer resume];
         [self.vodPlayer seek:dragedSeconds];
@@ -1386,7 +1371,6 @@ static UISlider * _volumeSlider;
     if (self.isLive) {
         self.isShiftPlayback = NO;
         self.isLoaded = NO;
-        [self.livePlayer resumeLive];
         [self.controlView playerBegin:self.playerModel isLive:self.isLive isTimeShifting:self.isShiftPlayback isAutoPlay:YES];
     } else {
         self.startTime = [self.vodPlayer currentPlaybackTime];
