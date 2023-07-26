@@ -1280,10 +1280,6 @@ static UISlider * _volumeSlider;
     NSString *timeStr        = [NSString stringWithFormat:@"%@ / %@", currentTimeStr, totalTimeStr];
     if (self.isLive) {
         timeStr = [NSString stringWithFormat:@"%@", currentTimeStr];
-    } else {
-        CGFloat value = draggedTime / self.vodPlayer.duration;
-        [self.controlView setProgressTime:draggedTime totalTime:self.vodPlayer.duration progressValue:value playableValue:self.vodPlayer.playableDuration / self.vodPlayer.duration];
-        [self updateSubtitleForTime:draggedTime];
     }
 
     UIImage *thumbnail;
