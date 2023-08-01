@@ -248,9 +248,6 @@ static UISlider * _volumeSlider;
         if (self.state == StatePause || self.state == StateBuffering) {
             [self.vodPlayer resume];
             self.state = StatePlaying;
-            if (self.delegate && [self.delegate respondsToSelector:@selector(superPlayerDidStart:)]) {
-                [self.delegate superPlayerDidStart:self];
-            }
         } else if (self.state == StatePlaying) {
             [self.spinner stopAnimating];
         } else {
@@ -1643,9 +1640,6 @@ static UISlider * _volumeSlider;
         [self.controlView setPlayState:YES];
         [self.vodPlayer resume];
         [self.vodPlayer seek:dragedSeconds];
-        if (self.delegate && [self.delegate respondsToSelector:@selector(superPlayerDidStart:)]) {
-            [self.delegate superPlayerDidStart:self];
-        }
     } else {
         if (self.state == StateStopped) {
             [self.vodPlayer setStartTime:dragedSeconds];
