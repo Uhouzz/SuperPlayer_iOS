@@ -499,6 +499,7 @@ static UISlider * _volumeSlider;
     self.playDidEnd = NO;
     [self.middleBlackBtn fadeOut:0.1];
     
+    [self.controlView setProgressTime:0 totalTime:self.vodPlayer.duration progressValue:0 playableValue:0 / self.vodPlayer.duration];
     self.coverImageView.backgroundColor = self.playerBackgroundColor ? : [UIColor blackColor];
 
     if ([self.vodPlayer supportedBitrates].count > 1) {
