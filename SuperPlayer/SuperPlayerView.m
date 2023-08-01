@@ -169,7 +169,6 @@ static UISlider * _volumeSlider;
     self.reportTime = [NSDate date];
     [self _removeOldPlayer];
     [self _playWithModel:playerModel];
-    self.coverImageView.alpha = 1;
     self.repeatBtn.hidden = YES;
     self.repeatBackBtn.hidden = YES;
 }
@@ -253,7 +252,6 @@ static UISlider * _volumeSlider;
         } else {
             if (self.state == StatePrepare) {
                 self.state         = StatePlaying;
-                self.coverImageView.hidden = YES;
                 [self.vodPlayer resume];
             } else {
                 _isPrepare = YES;
@@ -377,6 +375,8 @@ static UISlider * _volumeSlider;
     self.repeatBtn.hidden         = YES;
     self.playDidEnd               = NO;
     [self.middleBlackBtn fadeOut:0.1];
+    self.coverImageView.backgroundColor = self.playerBackgroundColor ? : [UIColor blackColor];
+
 }
 
 - (void)setVodPlayConfig {
@@ -449,13 +449,11 @@ static UISlider * _volumeSlider;
         self.vodPlayer.isAutoPlay = NO;
         self.spinner.hidden = YES;
     
-        self.coverImageView.hidden = NO;
         self.isPauseByUser = YES;
         [self.controlView setPlayState:NO];
     } else {
         self.spinner.hidden = YES;
-        self.coverImageView.hidden = self.state == StateStopped ? NO : YES;
-    
+
         self.isPauseByUser = YES;
         [self.controlView setPlayState:NO];
     }
@@ -497,7 +495,6 @@ static UISlider * _volumeSlider;
     [self.middleBlackBtn fadeOut:0.1];
     
     [self.controlView setProgressTime:0 totalTime:self.vodPlayer.duration progressValue:0 playableValue:0 / self.vodPlayer.duration];
-    self.coverImageView.backgroundColor = self.playerBackgroundColor ? : [UIColor blackColor];
 
     if ([self.vodPlayer supportedBitrates].count > 1) {
         [self.vodPlayer resume];
@@ -2176,7 +2173,7 @@ static UISlider * _volumeSlider;
         _coverImageView = [[UIImageView alloc] init];
         _coverImageView.userInteractionEnabled = YES;
         _coverImageView.contentMode = UIViewContentModeScaleAspectFill;
-        _coverImageView.alpha = 0;
+        _coverImageView.alpha = 1;
         _coverImageView.clipsToBounds = YES;
         [self insertSubview:_coverImageView belowSubview:self.controlView];
         [_coverImageView mas_makeConstraints:^(MASConstraintMaker *make) {
