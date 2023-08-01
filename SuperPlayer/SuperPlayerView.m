@@ -1945,6 +1945,7 @@ static UISlider * _volumeSlider;
         _coverImageView.userInteractionEnabled = YES;
         _coverImageView.contentMode = UIViewContentModeScaleAspectFill;
         _coverImageView.alpha = 0;
+        _coverImageView.clipsToBounds = YES;
         [self insertSubview:_coverImageView belowSubview:self.controlView];
         [_coverImageView mas_makeConstraints:^(MASConstraintMaker *make) {
             make.edges.mas_equalTo(UIEdgeInsetsZero);
