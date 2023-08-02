@@ -447,13 +447,10 @@ static UISlider * _volumeSlider;
 
     } else if (_playerModel.action == PLAY_ACTION_PRELOAD) {
         self.vodPlayer.isAutoPlay = NO;
-        self.spinner.hidden = YES;
-    
+
         self.isPauseByUser = YES;
         [self.controlView setPlayState:NO];
     } else {
-        self.spinner.hidden = YES;
-
         self.isPauseByUser = YES;
         [self.controlView setPlayState:NO];
     }
@@ -1755,9 +1752,8 @@ static UISlider * _volumeSlider;
             
         } else if (EvtID == PLAY_EVT_PLAY_LOADING) {
             // 当缓冲是空的时候
-            if (self->_playerModel.action != PLAY_ACTION_PRELOAD) {
-                self.state = StateBuffering;
-            }
+            self.state = StateBuffering;
+
         } else if (EvtID == PLAY_EVT_VOD_LOADING_END) {
             if (self.state == StateBuffering) {
                 self.state = StatePlaying;
