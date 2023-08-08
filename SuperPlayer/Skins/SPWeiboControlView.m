@@ -159,7 +159,7 @@
     if (!_backBtn) {
         _backBtn = [UIButton buttonWithType:UIButtonTypeCustom];
         [_backBtn setImage:SuperPlayerImage(@"wb_back") forState:UIControlStateNormal];
-        [_backBtn addTarget:self action:@selector(fullScreenBtnClick:) forControlEvents:UIControlEventTouchUpInside];
+        [_backBtn addTarget:self action:@selector(backBtnClick:) forControlEvents:UIControlEventTouchUpInside];
     }
     return _backBtn;
 }
@@ -224,6 +224,10 @@
         [self.delegate controlViewPause:self];
     }
     [self cancelFadeOut];
+}
+
+- (void)backBtnClick:(UIButton *)sender {
+    [self fullScreenBtnClick:self.fullScreenBtn];
 }
 
 - (void)fullScreenBtnClick:(UIButton *)sender {
