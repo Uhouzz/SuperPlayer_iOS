@@ -177,14 +177,16 @@
     // In next line, pass 0.0 to use the current device's pixel scaling factor (and thus account for Retina resolution).
     // Pass 1.0 to force exact pixel size.
     CGSize newSize = CGSizeMake(THUMB_VIEW_WIDTH, THUMB_VIEW_HEIGHT);
-    UIGraphicsBeginImageContextWithOptions(newSize, NO, 0.0);
-    
     CGRect rect = AVMakeRectWithAspectRatioInsideRect(CGSizeMake(image.size.width, image.size.width/self.videoRatio), CGRectMake(0, 0, THUMB_VIEW_WIDTH, THUMB_VIEW_HEIGHT));
     
-    [image drawInRect:rect];
-    
-    UIImage *newImage = UIGraphicsGetImageFromCurrentImageContext();
-    UIGraphicsEndImageContext();
+    UIGraphicsImageRendererFormat *format = [[UIGraphicsImageRendererFormat alloc] init];
+    format.opaque = NO;
+    format.scale = 0.0;
+    UIGraphicsImageRenderer *render = [[UIGraphicsImageRenderer alloc] initWithSize:newSize format:format];
+    UIImage *newImage = [render imageWithActions:^(UIGraphicsImageRendererContext * _Nonnull rendererContext) {
+        CGContextRef context = rendererContext.CGContext;
+        [image drawInRect:rect];
+    }];
     return newImage;
 }
 @end
