@@ -11,7 +11,7 @@ Pod::Spec.new do |spec|
     spec.requires_arc = true
 
     spec.dependency 'AFNetworking','4.0.1'
-    spec.dependency 'SDWebImage','5.7'
+    spec.dependency 'SDWebImage','5.19.1'
     spec.dependency 'Masonry'
     spec.dependency 'MMLayout','0.2.0'
 
@@ -38,7 +38,7 @@ Pod::Spec.new do |spec|
     end
     spec.subspec "Professional" do |s|
         s.dependency 'SuperPlayer/Core'
-	s.dependency 'TXLiteAVSDK_Professional', '= 11.3.14342'
+	s.dependency 'TXLiteAVSDK_Professional', '= 11.7.15343'
 #        s.vendored_framework = "Frameworks/TXLiteAVSDK_Professional.framework"
     end
     spec.subspec "Enterprise" do |s|
@@ -71,7 +71,7 @@ Pod::Spec.new do |spec|
         s.dependency 'TXLiteAVSDK_UGC_IJK_PITU'
 #        s.vendored_framework = "Frameworks/TXLiteAVSDK_UGC_IJK_PITU.framework"
     end
-
+    spec.resource_bundles = {'SuperPlayer' => ['SuperPlayer/Resource/PrivacyInfo.xcprivacy']}
     spec.frameworks = ["SystemConfiguration", "CoreTelephony", "VideoToolbox", "CoreGraphics", "AVFoundation", "Accelerate"]
     spec.libraries = [
       "z",
