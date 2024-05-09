@@ -11,9 +11,9 @@ Pod::Spec.new do |spec|
     spec.requires_arc = true
 
     spec.dependency 'AFNetworking','4.0.1'
-    spec.dependency 'SDWebImage','5.19.1'
+    spec.dependency 'SDWebImage','5.19.2'
     spec.dependency 'Masonry'
-    spec.dependency 'MMLayout','0.2.0'
+    spec.dependency 'MMLayout','0.3.0'
 
     spec.static_framework = true
     spec.default_subspec = 'Player'
@@ -38,7 +38,7 @@ Pod::Spec.new do |spec|
     end
     spec.subspec "Professional" do |s|
         s.dependency 'SuperPlayer/Core'
-	s.dependency 'TXLiteAVSDK_Professional', '= 11.7.15343'
+	s.dependency 'TXLiteAVSDK_Professional', '= 11.8.15669'
 #        s.vendored_framework = "Frameworks/TXLiteAVSDK_Professional.framework"
     end
     spec.subspec "Enterprise" do |s|
