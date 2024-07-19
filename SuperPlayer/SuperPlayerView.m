@@ -90,6 +90,7 @@ static UISlider * _volumeSlider;
     [self createGesture];
     
     self.autoPlay = YES;
+    self.autoPauseInBackground = YES;
 }
 
 - (void)addSubtitleViewWithTagView:(UIView *)tagView {
@@ -966,7 +967,7 @@ static UISlider * _volumeSlider;
     [self fastViewUnavaliable];
     NSLog(@"appDidEnterBackground");
     self.didEnterBackground = YES;
-    if (self.isLive) {
+    if (self.isLive || !self.autoPauseInBackground) {
         return;
     }
     
@@ -983,7 +984,7 @@ static UISlider * _volumeSlider;
     [self fastViewUnavaliable];
     NSLog(@"appDidEnterPlayground");
     self.didEnterBackground = NO;
-    if (self.isLive) {
+    if (self.isLive || !self.autoPauseInBackground) {
         return;
     }
     
