@@ -155,6 +155,9 @@
 }
 
 - (void)hide{
+    if (!self.superPlayer) {
+        return;
+    }
     self.floatViewRect = _rootView.frame;
     
     [_rootView removeFromSuperview];
@@ -162,7 +165,7 @@
     
     self.superPlayer.hiddenFastView = self.hiddenfastView;
     self.superPlayer.fatherView = self.origFatherView;
-    
+    self.superPlayer = nil;
     _isShowing = NO;
 }
 
