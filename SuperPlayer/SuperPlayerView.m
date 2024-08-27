@@ -1542,7 +1542,7 @@ static UISlider * _volumeSlider;
     [self.vodPlayer setRenderMode:self.playerConfig.renderMode];
 }
 
-- (void)controlViewConfigUpdate:(SuperPlayerView *)controlView withReload:(BOOL)reload {
+- (void)controlViewConfigUpdate:(SuperPlayerControlView *)controlView withReload:(BOOL)reload {
     if (self.state == StateStopped && !self.isLive) {
         return;
     }
@@ -1716,13 +1716,13 @@ static UISlider * _volumeSlider;
             [self.controlView setPlayState:YES];
             self.repeatBtn.hidden = YES;
             self.playDidEnd = NO;
-            // 不使用vodPlayer.autoPlay的原因是暂停的时候会黑屏，影响体验
-            [self prepareAutoplay];
             //1.开始播放后自动隐藏 2.如果视频自动播放才需要隐藏
             if (!self.disableAutoHideControl && self.autoPlay) {
                 [NSObject cancelPreviousPerformRequestsWithTarget:self selector:@selector(controlViewFadeOut) object:nil];
                 [self performSelector:@selector(controlViewFadeOut) withObject:nil afterDelay:2.5];
             }
+            // 不使用vodPlayer.autoPlay的原因是暂停的时候会黑屏，影响体验
+            [self prepareAutoplay];
         }
         if (EvtID == PLAY_EVT_VOD_PLAY_PREPARED) {
             [self updateBitrates:player.supportedBitrates];

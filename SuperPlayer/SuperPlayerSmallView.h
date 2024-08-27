@@ -27,8 +27,6 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic,copy) SuperPlayerWindowEventHandler closeHandler;  // 默认关闭
 /// 小窗播放器
 @property (nonatomic,weak) SuperPlayerView *superPlayer;
-/// 小窗主view
-@property (readonly) UIView *rootView;
 /// 点击小窗返回的controller
 @property UIViewController *backController;
 /// 小窗是否显示
@@ -36,13 +34,20 @@ NS_ASSUME_NONNULL_BEGIN
 
 /// 小窗底部状态按钮title
 @property (nonatomic ,copy) NSString *statusBtntitle;
-
 /// 关闭按钮延迟多少秒显示   默认 0
 @property (nonatomic ,assign) NSInteger closeBtnAfterTime;
 
 @property (nonatomic, assign) CGRect floatViewRect;
 
+@property (nonatomic, assign) BOOL hideStatus;
+@property (nonatomic, assign) BOOL hideClose;
+
 @property (nonatomic, weak) UIView *customView;
+@property (nonatomic, strong) UIButton *defaultCloseBtn;
+@property (nonatomic, strong) UIButton *defaultStatusBtn;
+/// 小窗主view
+@property (nonatomic, strong) UIView *rootView;
+
 
 @end
 
