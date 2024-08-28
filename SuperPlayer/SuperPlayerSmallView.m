@@ -121,6 +121,7 @@
     self.superPlayer.hiddenFastView = self.hiddenfastView;
     self.superPlayer.fatherView = self.origFatherView;
     self.superPlayer = nil;
+    self.baseVC = nil;
     _isShowing = NO;
 }
 
