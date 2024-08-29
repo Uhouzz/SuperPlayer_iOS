@@ -122,6 +122,7 @@
     self.superPlayer.fatherView = self.origFatherView;
     self.superPlayer = nil;
     self.baseVC = nil;
+    self.windowType = UHSmallWindowTypeLive;
     _isShowing = NO;
 }
 

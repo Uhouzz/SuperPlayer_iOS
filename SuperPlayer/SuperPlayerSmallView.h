@@ -11,6 +11,11 @@
 
 typedef void(^SuperPlayerWindowEventHandler)(void);
 
+typedef NS_ENUM(NSInteger, UHSmallWindowType) {
+    UHSmallWindowTypeLive,
+    UHSmallWindowTypeVod,
+};
+
 NS_ASSUME_NONNULL_BEGIN
 
 @interface SuperPlayerSmallView : UIView
@@ -22,6 +27,8 @@ NS_ASSUME_NONNULL_BEGIN
 - (void)hide;
 /// 单例
 + (instancetype)sharedInstance;
+
+@property (nonatomic, assign) UHSmallWindowType windowType;
 
 @property (nonatomic,copy) SuperPlayerWindowEventHandler backHandler;
 @property (nonatomic,copy) SuperPlayerWindowEventHandler closeHandler;  // 默认关闭
