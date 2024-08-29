@@ -65,18 +65,18 @@
     [_progressView mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.equalTo(self);
         make.right.equalTo(self);
-        make.centerY.equalTo(self).mas_offset(0.5);
+        make.centerY.equalTo(self);
         make.height.mas_equalTo(2);
     }];
-    _progressView.layer.masksToBounds = YES;
-    _progressView.layer.cornerRadius  = 1;
-
+    self.progressView.layer.masksToBounds = YES;
     [self sendSubviewToBack:self.progressView];
 }
 
 - (void)layoutSubviews {
     [super layoutSubviews];
     self.tracker = self.subviews.lastObject;
+    self.progressView.mm_h = self.mm_h / 2;
+    self.progressView.layer.cornerRadius = self.progressView.mm_h/2;
     for (PlayerPoint *point in self.pointArray) {
         point.holder.center = [self holderCenter:point.where];
         [self insertSubview:point.holder belowSubview:self.tracker];
@@ -119,6 +119,16 @@
         point.holder.hidden = hiddenPoints;
     }
     _hiddenPoints = hiddenPoints;
+}
+
+- (void)setThumbOffset:(CGFloat)thumbOffset {
+    if (_thumbOffset != thumbOffset) {
+        _thumbOffset = thumbOffset;
+        [self.progressView mas_updateConstraints:^(MASConstraintMaker *make) {
+            make.left.equalTo(self).offset(thumbOffset/2);
+            make.right.equalTo(self).offset(-thumbOffset/2);
+        }];
+    }
 }
 
 - (CGRect)thumbRectForBounds:(CGRect)bounds trackRect:(CGRect)rect value:(float)value {
