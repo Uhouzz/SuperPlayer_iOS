@@ -94,9 +94,12 @@ static UISlider * _volumeSlider;
 }
 
 - (void)addSubtitleViewWithTagView:(UIView *)tagView {
+    if (self.subtitlesView) {
+        [self.subtitlesView removeFromSuperview];
+        self.subtitlesView = nil;
+    }
     self.subtitlesView = [[SuperPlayerSubtitlesView alloc] init];
-    
-    [self addSubview:self.subtitlesView];
+    [self insertSubview:self.subtitlesView belowSubview:self.controlView];
     self.tagView = tagView;
     [self.subtitlesView mas_makeConstraints:^(MASConstraintMaker *make) {
         make.bottom.mas_equalTo(self.tagView.mas_top).offset(-10);
