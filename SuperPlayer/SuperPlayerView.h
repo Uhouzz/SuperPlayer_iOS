@@ -68,6 +68,8 @@ typedef NS_ENUM(NSInteger, SuperPlayerLayoutStyle) {
 @property (nonatomic, assign, setter=setVFullScreen:) BOOL isVFullScreen;
 /// 是否锁定旋转
 @property (nonatomic, assign) BOOL isLockScreen;
+/// 是否禁用设备旋转触发的自动全屏，默认 NO；不影响手动切换全屏
+@property (nonatomic, assign) BOOL disableAutoRotate;
 /// 是否是直播流
 @property (readonly) BOOL isLive;
 /// 在后台是否自动暂停
